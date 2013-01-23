@@ -1,0 +1,131 @@
+\documentclass{beamer}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+\title{Conceitos básicos de realidade aumentada sem marcadores}
+\author{Mailson D. Lira Menezes}
+\institute{Universidade Federal de Pernambuco}
+\date{23 de outubro de 2012}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+    Realidade aumentada
+    \begin{itemize}
+        \item Computação gráfica + Processamento de imagens + Visão computacional
+        \item Inserção de elementos virtuais em cenas reais
+    \end{itemize}
+\end{frame}
+
+% TODO: frame com imagem de realidade aumentada tradicional (com marcador)
+
+\begin{frame}{Câmera}
+    \textbf{Parâmetros intrínsecos} são aqueles inerentes à câmera, independentes de posição\\
+    % $
+    % k = 
+    % \begin{pmatrix}
+    %     a_x & s   & u_0 \\
+    %     0   & a_y & v_0 \\
+    %     0   & 0   & 1
+    % \end{pmatrix}
+    % $
+    \begin{itemize}
+        \item Distância focal
+        \item Quantidade de pixels por unidade de distância
+    \end{itemize}
+    \textbf{Parâmetros extrínsecos} são dados em função da localização no espaço\\
+    \begin{itemize}
+        \item Rotação
+        \item Translação
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \textbf{Matriz de pose} é obtida a partir da composição dos parâmetros intrínsecos e extrínsecos da câmera
+\end{frame}
+
+\begin{frame}
+    Realidade aumentada sem marcadores
+    \begin{itemize}
+        \item Utiliza elementos naturalmente presentes na cena
+        \item SfM/SLAM
+        \item Técnica baseada em modelos
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    SfM/SLAM
+    \begin{itemize}
+        \item Recuperação da pose da câmera durante o rastreamentos
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    Cálculo de pose bottom-up
+    \begin{itemize}
+        \item Perspective-n-points
+        \item RanSaC
+    \end{itemize}
+\end{frame}
+
+
+% -----------------------------------
+% \begin{frame}{Introduction}
+% This is a short introduction to Beamer class.
+% \end{frame}
+% 
+% \section{Section 1}
+% \begin{frame}
+%     Hello
+%     \begin{itemize}
+%         \pause \item Testing beamer
+%         \pause \item This is a good test
+%     \end{itemize}
+% \end{frame}
+% 
+% \begin{frame}
+%     aye
+%     \begin{itemize}
+%         \item<2-> appears from slide 2 on
+%         \item<2-4> appears from slide 3 on
+%         \item<4-> appears from slide 4 on
+%         \item<5-> appears from slide 5 on
+%     \end{itemize}
+% \end{frame}
+% 
+% \section{Section 2}
+% \begin{frame}
+%     oie
+%     \begin{itemize}[<+->]
+%         \item L
+%         \item A
+%         \item T
+%     \end{itemize}
+% \end{frame}
+% 
+% \begin{frame}
+% 
+% \begin{itemize}
+% \item Language used by Beamer: L\uncover<2->{A}TEX
+% \item Language used by Beamer: L\only<2->{A}TEX
+% \end{itemize}
+% 
+% \begin{block}{Block title}
+% This is a block in blue
+% \end{block}
+% 
+% \begin{alertblock}{Alert-block title}
+% This is a block in red
+% \end{alertblock}
+% 
+% \begin{exampleblock}{Example-block title}
+% This is a block in green
+% \end{exampleblock}
+% 
+% \end{frame}
+
+\end{document}

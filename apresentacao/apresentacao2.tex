@@ -1,0 +1,167 @@
+\documentclass{beamer}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usetheme{default}
+\usecolortheme{beaver}
+\title{MAR baseada em arestas}
+\author{Mailson D. Lira Menezes}
+\institute{Universidade Federal de Pernambuco}
+\date{29 de outubro de 2012}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item Técnica baseada em modelo
+        \item Eficiente
+        \item Relativamente simples
+        \item Admite mudança brusca de iluminação
+        \item Não admite mudança brusca de câmera
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Técnicas}
+    \begin{itemize}
+        \item Extração explícita de arestas
+        \item Amostragem de pontos
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Extração explícita de arestas}
+    \begin{enumerate}
+        \item Segmentação da imagem (extração da aresta)
+        \item Correspondência modelo-cena
+            \begin{itemize}
+                \item Distância de Mahalonabis \\
+                    Cada aresta do modelo é relacionada com uma aresta da imagem que possui a menos distância de Mahalonabis
+                    \[
+                        d = (X_i - X_v)^t(\textrm{Cov})^{-1}(X_i - X_v)
+                    \]
+            \end{itemize}
+        \item Estimativa de pose \\
+            Minimizar o erro utilizando o algoritmo de Levenberg-Marquardt
+            \[
+                \textrm{erro} = \sum_j(X^j_i - X^j_v(P))^t(\textrm{Cov})^{-1}(X^j_i - X^j_v(P))
+            \]
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Amostragem de pontos}
+    \begin{itemize}
+        \item Relaciona amostras de pontos 3D com pontos 2D extraídos da cena
+        \item Precisa de uma estimativa inicial de pose
+        \item Técnicas
+            \begin{itemize}
+                \item Drummond
+                \item Wuest
+                \item Moving Edges
+                \item Céline
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Técnica de Drummond}
+    \begin{enumerate}
+        \item Renderiza modelo com a pose anterior
+        \item Extração dos pontos visíveis no modelos \\
+            BSP
+        \item Fazer correspondência dos pontos do modelo com pontos da imagem \\
+            Busca ao longo da normal da aresta
+        \item Cálculo da estimativa de movimento \\
+            Utiliza um estimador robusto para eliminar os \emph{outliers}
+        \item Cálculo da pose a partir da estimativa de movimento
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Técnica de Wuest}
+    É uma variação mais simples e otimizada do trabalho de Drummond
+    \begin{enumerate}
+        \item Amostragem proporcional de pontos
+            \[
+                n = \textrm{tamanho da linha de projeção} \times \textrm{coeficiente de amostragem}
+            \]
+        \item Extração dos pontos visíveis \\
+            Extrai arestas a partir dos pontos visíveis
+        \item Encontra pontos de forte gradiente (hipóteses) como prováveis correspondentes 2D-3D
+        \item Estimativa de pose
+            \begin{itemize}
+                \item Múltiplas hipóteses
+                \item Modelo adaptativo
+                \item Algoritmo de minimização Levenberg-Marquardt
+            \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Técnica com Moving Edges}
+    Variação da técnica de Wuest que usa o algoritmo Moving Edges para encontrar os pontos correspondentes
+    \begin{enumerate}
+        \item Amostragem proporcional de pontos
+        \item Extração dos pontos visíveis
+        \item Encontrar hipóteses a partir do Moving Edges
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Moving Edges}
+    Para cada aresta $E_i$ projetada com a pose anterior, traçamos uma normal passando pelo ponto amostrado $e_{i,j}$. As hipóteses de correspondência para $e_{i,j}$ são os pontos com gradiente maior que $g$ e que estão dentro de um intervalo de busca pré-definido. \\
+    \medskip
+    Caso seja utilizada a abordagem de uma única hipótese, a hipótese com maior gradiente é retornada.
+\end{frame}
+
+\begin{frame}{Técnica com Moving Edges}
+    Variação da técnica de Wuest que usa o algoritmo Moving Edges para encontrar os pontos correspondentes
+    \begin{enumerate}
+        \item Amostragem proporcional de pontos
+        \item Extração dos pontos visíveis
+        \item Encontrar hipóteses a partir do Moving Edges
+        \item Estimativa de pose
+            \begin{itemize}
+                \item Minimização do erro de reprojeção ($r$)
+                    \begin{itemize}
+                        \item Única hipótese: $r = \sum^n_{i=0}{\textrm{dist}(P \ast M_i, m_i)}$
+                        \item Múltiplas hipóteses: $r = \sum^n_{i=0}{\textrm{dist}(P \ast M_i, \textrm{mindist}(m^j_i, P \ast M_i))}$
+                    \end{itemize}
+            \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Técnica de Céline com múltiplas hipóteses}
+    \begin{enumerate}
+        \item Projetar modelo com a pose anterior
+        \item Para cada amostra $e_{i,j}$ da aresta $E_i$ é extraído um conjunto de hipóteses $\{e'_{i,j,l}\}$
+        \item As hipóteses de cada aresta são classificadas utilizando a clusterização \emph{k-means}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{K-means}
+    \begin{itemize}
+        \item Para cada aresta $E_i$, as hipóteses são separadas em $k_i$ classes $(c^i_1, \dots , c^i_{k_i})$. Cada classe é um conjunto de pontos e o seu centróide é a reta obtida pelos pontos da classe.
+        \item O algoritmo é inicializado com $k_i = \textrm{max}_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de hipóteses selecionadas para a amostra $e_{i,j}$.
+        \item A m-ésima classe é inicializada com a m-ésima hipótese encontrada em cada aresta, ou seja $c^i_m = \{e'_{i,j,m}\}_j$
+        \item A cada iteração o centróide de cada classe é computado
+        \item Cada hipótese é então reagrupada para o \emph{cluster} mais próximo
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dúvidas}
+    \begin{itemize}
+        \item O artigo diz que após o \emph{k-means} temos o conjunto de classes $c^i_m = (\{e'_{i,j,m}\}_j, r^i_m)$, onde $r^i_m$ é o resíduo do \emph{least square minimization}.
+        \item Também diz que escolhas randômicas com pesos $w^i_m$ são feitas, sendo
+            \[
+            w^i_m = \begin{cases}
+                e^{-\lambda \left( \frac{r^i_m - r^i_{min}}{r^i_{max} - r^i_{min}}\right)^2 } & \mbox{se } r^i_{max} \neq r^i_{min} \\
+                1 & \mbox{senão}.
+            \end{cases}
+            \]
+            onde $\lambda$ é um valor arbitrário
+        \item O cálculo da pose é feito minimizando
+            \[
+                S = \frac{1}{N_e} \sum_i \sum_{e'_{i,j,l} \in c^i_{p_i}} \rho (\Delta_{E_i}(e'_{i,j,l}))
+            \]
+            onde $\Delta_{E_i}(e'_{i,j,l})$ é a distância ao quadrado entre a aresta $E_i$ e o ponto $e'_{i,j,l}$, $N_e$ é o número total de amostras e $\rho$ é um estimador robusto.
+    \end{itemize}
+\end{frame}
+
+\end{document}
