@@ -1,0 +1,29 @@
+From: <mdlm@c...>
+To: <tg@c...>
+
+Nome:
+Mailson Daniel Lira Menezes
+
+E-mail:
+mdlm@c...
+
+Título do trabalho: 
+Aprimoramento da etapa de casamento de uma técnica de rastreamento baseado em arestas
+
+Área:
+Mídias e interação (realidade aumentada)
+
+Orientadora:
+Veronica Teichrieb
+
+Co-orientador:
+Francisco Paulo Magalhães Simões
+
+Resumo:
+Além do tradicional uso de marcadores nas aplicações de realidade aumentada, é possível obter bons resultados utilizando técnicas que não requerem o seu uso. A realidade aumentada sem marcadores utiliza elementos do próprio objeto para realizar o rastreamento e um desses elementos que podem ser utilizados são as arestas do objeto.
+Entretanto, a extração dessas arestas nem sempre é precisa e outros elementos presentes na cena, ou até a sombra do próprio objeto, podem atrapalhar essa etapa.
+O objetivo deste trabalho é implementar uma técnica que visa escolher entre múltiplas hipóteses de aresta, aquela que é mais provável de ser a aresta correta do objeto.
+A técnica atualmente não é executada em tempo real, e por isso será implementada usando a linguagem CUDA, da NVIDIA, a fim de aproveitar o poder do paralelismo das GPUs atuais.
+
+Possíveis avaliadores:
+Silvio de Barros Melo
