@@ -22,7 +22,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ProvidesClass{ufpethesis}[2006/29/01]
-\input{aboutufpethesis.txt}
+\input{ufpethesis/aboutufpethesis.txt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% OPTIONS 
@@ -213,7 +213,7 @@ grau de \@degree\ em \@majorfield.}
   \gdef\@university{#1}}
 \def\@university{Universidade Federal de Pernambuco}
 
-\def\universitylogo{ufpelogo.tex}
+\def\universitylogo{ufpethesis/ufpelogo.tex}
 
 \let\@showinstitute=0
 \def\institute#1{%
