@@ -11,7 +11,7 @@
 %%%    Date                = "29 Jan 2006",
 %%%    Filename            = "ufpethesis.cls",
 %%%    Address             = "Universidade Federal de Pernambuco
-%%%                           Centro de Informática",
+%%%                           Centro de InformÃ¡tica",
 %%%    Telephone           = "+55 81 2126-8430",
 %%%    Email               = "paguso@cin.ufpe.br",
 %%%    Keywords            = "LaTeX, Thesis, Dissertation",
@@ -85,7 +85,7 @@
 \RequirePackage{babel}
 \RequirePackage{calc}
 \RequirePackage{ifthen}
-\RequirePackage[latin1]{inputenc}
+\RequirePackage[utf8]{inputenc}
 \RequirePackage{textcase}
 \RequirePackage{textcomp}
 \RequirePackage{url}
@@ -128,9 +128,9 @@
 \gdef\@femaleadvisertitle{Orientadora}
 \gdef\@malecoadvisertitle{Co-orientador}
 \gdef\@femalecoadvisertitle{Co-orientadora}
-\gdef\@bachelordissertation{Trabalho de Graduação}
-\gdef\@mastersdissertation{Dissertação de Mestrado}
-\gdef\@phdqualifying{Monografia de Qualificação}
+\gdef\@bachelordissertation{Trabalho de GraduaÃ§Ã£o}
+\gdef\@mastersdissertation{DissertaÃ§Ã£o de Mestrado}
+\gdef\@phdqualifying{Monografia de QualificaÃ§Ã£o}
 \gdef\@phdproposal{Proposta de Tese de Doutorado}
 \gdef\@phdthesis{Tese de Doutorado}
 \gdef\@bachelordegree{Bacharel}
@@ -139,7 +139,7 @@
 \gdef\@presentationtext{%
 Trabalho apresentado ao Programa de
 \@program\ do \if\@showdepartment1\@department\ \else\@institute\ \fi
-da \@university\ como requisito parcial para obtenção do
+da \@university\ como requisito parcial para obtenÃ§Ã£o do
 grau de \@degree\ em \@majorfield.}
 \gdef\resumoname{Resumo}
 \gdef\abstrname{Abstract}
@@ -150,23 +150,23 @@ grau de \@degree\ em \@majorfield.}
 
 % Portuguese
 \if\@language0
-  \gdef\@notdefined{NÃO DEFINIDO}
+  \gdef\@notdefined{NÃƒO DEFINIDO}
   \gdef\acknowledgementsname{Agradecimentos}
   \gdef\@axiomname{Axioma}
   \gdef\@conjecturename{Conjectura}
-  \gdef\@defname{Definição}
+  \gdef\@defname{DefiniÃ§Ã£o}
   \gdef\@lemmaname{Lema}
   \gdef\@theoname{Teorema}
-  \gdef\@propname{Proposição}
-  \gdef\@corname{Corolário}
+  \gdef\@propname{ProposiÃ§Ã£o}
+  \gdef\@corname{CorolÃ¡rio}
   \gdef\@proofname{Prova}
   \gdef\@figurename{Figura}
   \gdef\@tablename{Tabela}
-  \gdef\@equationame{equação}
-  \gdef\@chaptername{Capítulo}
-  \gdef\@sectionname{Seção}
-  \gdef\@appendixname{Apêndice}
-  \gdef\@pagename{página}
+  \gdef\@equationame{equaÃ§Ã£o}
+  \gdef\@chaptername{CapÃ­tulo}
+  \gdef\@sectionname{SeÃ§Ã£o}
+  \gdef\@appendixname{ApÃªndice}
+  \gdef\@pagename{pÃ¡gina}
   \gdef\@colophontext{%
   \urlstyle{rm}%
   Este volume foi tipografado em \LaTeX\ na classe \textsf{UFPEThesis}
@@ -717,7 +717,7 @@ grau de \@degree\ em \@majorfield.}
 	{0pt}% Heading indent amount
 	{\bfseries}{.}% Heading font and punctuation after it
 	{1ex plus 0pt minus .2ex}% Space after heading 
-	{}% Head spec (empty = same as ‘plain’ style
+	{}% Head spec (empty = same as Â‘plainÂ’ style
 \theoremstyle{definition}
 \newtheorem{Def}{\@defname}[chapter]
 \theoremstyle{theo}
@@ -1198,7 +1198,7 @@ grau de \@degree\ em \@majorfield.}
 	{0pt}% Heading indent amount
 	{\bfseries}{.}% Heading font and punctuation after it
 	{1ex plus 0pt minus .2ex}% Space after heading 
-	{}% Head spec (empty = same as ‘plain’ style
+	{}% Head spec (empty = same as Â‘plainÂ’ style
 \theoremstyle{definition}
 \newtheorem{Def}{\@defname}[chapter]
 \theoremstyle{theo}
