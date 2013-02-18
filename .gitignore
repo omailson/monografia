@@ -4,3 +4,7 @@
 *.bbl
 *.blg
 *.out
+template.lof
+template.lot
+template.tex
+template.toc
