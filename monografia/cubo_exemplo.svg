@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <defs/>
+    <g>
+        <g latexdraw:type="picture" id="id1465">
+            <image
+                xlink:href="cubo_0.ppm"
+                x="336.0" y="139.0" height="240" width="320"/>
+        </g>
+        <g latexdraw:type="polygon" id="id1467">
+            <polygon
+                points="448.0,229.0 448.0,304.0 498.0,347.0 501.0,276.0 "
+                stroke-width="2.0" stroke="blue" fill="none"/>
+        </g>
+        <g latexdraw:type="polygon" id="id1468">
+            <polygon
+                points="501.0,275.0 575.0,243.0 517.0,199.0 447.0,226.0 "
+                stroke-width="2.0" stroke="blue" fill="none"/>
+        </g>
+        <g latexdraw:type="polygon" id="id1469">
+            <polygon
+                points="501.0,277.0 499.0,347.0 565.0,310.0 574.0,244.0 "
+                stroke-width="2.0" stroke="blue" fill="none"/>
+        </g>
+        <g latexdraw:type="dot" id="id1470" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="448.0 298.0">
+            <circle r="3.0" fill="red" cx="448.0" cy="298.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id1471" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="448.0 281.0">
+            <circle r="3.0" fill="red" cx="448.0" cy="281.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id1472" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="448.0 263.0">
+            <circle r="3.0" fill="red" cx="448.0" cy="263.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id1473" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="448.0 240.0">
+            <circle r="3.0" fill="red" cx="448.0" cy="240.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id1474" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="432.0 238.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="429.6" x2="434.4" y1="235.6" y2="240.4"/>
+                <line x1="434.4" x2="429.6" y1="235.6" y2="240.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1475" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="433.0 264.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="430.6" x2="435.4" y1="261.6" y2="266.4"/>
+                <line x1="435.4" x2="430.6" y1="261.6" y2="266.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1476" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="435.0 281.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="432.6" x2="437.4" y1="278.6" y2="283.4"/>
+                <line x1="437.4" x2="432.6" y1="278.6" y2="283.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1477" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="436.0 298.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="433.6" x2="438.4" y1="295.6" y2="300.4"/>
+                <line x1="438.4" x2="433.6" y1="295.6" y2="300.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1478" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="423.0 298.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="420.6" x2="425.4" y1="295.6" y2="300.4"/>
+                <line x1="425.4" x2="420.6" y1="295.6" y2="300.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1479" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="403.0 281.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="400.6" x2="405.4" y1="278.6" y2="283.4"/>
+                <line x1="405.4" x2="400.6" y1="278.6" y2="283.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1480" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="417.0 264.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="414.6" x2="419.4" y1="261.6" y2="266.4"/>
+                <line x1="419.4" x2="414.6" y1="261.6" y2="266.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1481" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="416.0 238.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="413.6" x2="418.4" y1="235.6" y2="240.4"/>
+                <line x1="418.4" x2="413.6" y1="235.6" y2="240.4"/>
+            </g>
+        </g>
+        <g latexdraw:type="dot" id="id1482" latexdraw:size="6.0"
+            latexdraw:dotShape="x" latexdraw:position="402.0 238.0">
+            <g stroke-linecap="square" stroke="#010101" stroke-width="0.6">
+                <line x1="399.6" x2="404.4" y1="235.6" y2="240.4"/>
+                <line x1="404.4" x2="399.6" y1="235.6" y2="240.4"/>
+            </g>
+        </g>
+    </g>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:displayBorders>false</latexdraw:displayBorders>
+            <latexdraw:autoAdjust>true</latexdraw:autoAdjust>
+            <latexdraw:ppc>50</latexdraw:ppc>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:unit>cm</latexdraw:unit>
+            <latexdraw:classicGrid>false</latexdraw:classicGrid>
+            <latexdraw:gridGap>10</latexdraw:gridGap>
+            <latexdraw:code>0</latexdraw:code>
+            <latexdraw:displayGrid>true</latexdraw:displayGrid>
+            <latexdraw:magneticGrid>false</latexdraw:magneticGrid>
+            <latexdraw:autoUpdate>true</latexdraw:autoUpdate>
+            <latexdraw:version>2.0.8</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1340</latexdraw:width>
+                <latexdraw:height>775</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>30</latexdraw:x>
+                <latexdraw:y>-3</latexdraw:y>
+            </latexdraw:position>
+            <latexdraw:dividerPosition>0.8149253731343283</latexdraw:dividerPosition>
+            <latexdraw:displayCodePanel>true</latexdraw:displayCodePanel>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:delimitorOpacity>130</latexdraw:delimitorOpacity>
+        </latexdraw:metadata>
+    </metadata>
+</svg>

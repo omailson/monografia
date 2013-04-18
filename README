@@ -1,2 +1,12 @@
 Trabalho de conclusão do bacharelado em ciência da computação pela Universidade
 Federal de Pernambuco.
+
+=== Compilar imagens
+
+As imagens monografia/cubo_arestas.svg, monografia/cubo_exemplo.svg e
+monografia/cubo_kmeans.svg devem ser abertas com o `latexdraw' e salvas como
+pdf na mesma pasta.
+
+=== Requirements
+
+LatexDraw 2.0.8
