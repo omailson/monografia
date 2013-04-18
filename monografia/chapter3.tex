@@ -1,0 +1,52 @@
+\chapter{Descrição da técnica}
+
+A técnica usada neste trabalho é baseada em arestas e usa um modelo pré-definido para a pose inicial. A extração das arestas é feita por amostragem de pontos, descrita na seção anterior.
+
+\section{Trabalhando com múltiplas hipóteses}
+
+Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre se consegue extrair com precisão as arestas da imagem. Na seção anterior descrevemos que um dos passos para a extração das arestas é a procura por pontos de alto gradiente na normal da aresta. Muitas vezes é possível encontrar vários desses pontos para cada amostra e neste caso temos múltiplas hipóteses de pontos da imagem correspondente ao ponto amostrado.
+
+O que se faz neste caso é, para cada aresta do modelo, trabalhar com múltiplos correspondentes na imagem.
+
+Como existem múltiplas hipóteses de correspondência em cada amostra do modelo, pode-se concluir que existirão múltiplas hipóteses de arestas para compor a pose da cena atual, como mostra a \figref{cubo_0}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics{monografia/cubo_exemplo}
+\caption{}
+\label{cubo_0}
+\end{figure}
+
+Na \figref{cubo_0}, o cubo azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Note que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics{monografia/cubo_arestas}
+\caption{}
+\label{cubo_arestas}
+\end{figure}
+
+Na \figref{cubo_arestas} extraímos as hipóteses de aresta a partir das hipóteses das amostras. A escolha das arestas foi feita de maneira que para cada amostra escolhida, a primeira hipótese encontrada irá compor a primeira aresta; a segunda hipótese fará parte da segunda aresta e assim por diante.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics{monografia/cubo_kmeans}
+\caption{}
+\label{cubo_kmeans}
+\end{figure}
+
+No algoritmo usado nesse trabalho, baseado em \cite{celine}, é feita uma clusterização usando \emph{k-means} para que as hipóteses fiquem o mais próximo possível das arestas formadas. Como ilustrado na \figref{cubo_kmeans}, as hipóteses da \figref{cubo_arestas} são realocadas para que cada conjunto hipóteses forme um \emph{cluster} (ou aresta).
+
+\section{Escolha da pose}
+
+Para cada aresta da pose anterior, uma das hipóteses de aresta é escolhida aleatoriamente e assim será formada a pose atual.
+
+\begin{comment}
+\section{A FAZER}
+
+\begin{enumerate}
+\item Descrever o moving-edges. Mostrar que com múltiplas hipóteses a $n$-ésima hipótese de ponto vai corresponder à $n$-ésima hipótese de aresta.
+\item Falar sobre \cite{celine}. As hipóteses de pontos vão formar arestas tal que elas fiquem as mais paralelas possíveis da aresta da cena atual.
+\item colocar figuras para ilustrar
+\end{enumerate}
+\end{comment}
