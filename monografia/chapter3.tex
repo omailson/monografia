@@ -31,7 +31,38 @@ Tentar todas as combinações de hipóteses $e'_{i,j,l}$ possíveis para obter a
 
 Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada aresta são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que chamaremos de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
 
-Inicialmente agrupamos as hipóteses $e'_{i,j,l}$ da aresta $E_i$ nas classes $(c^i_1, \dots, c^i_{k_i})$ na ordem em que elas foram encontradas na busca pela normal. Dessa forma a classe $c^i_m$ é formada inicialmente pelo conjunto $\{e'_{i,j,m}\}$, em que $0 < j \leq n_i$ e $n_i$ é o número de amostras da aresta $E_i$. Esse é um bom agrupamento inicial, já que boa parte das amostras já estão localizadas no seu \emph{cluster} final. Em seguida...
+Inicialmente agrupamos as hipóteses $e'_{i,j,l}$ da aresta $E_i$ nas classes $(c^i_1, \dots, c^i_{k_i})$ na ordem em que elas foram encontradas na busca pela normal. Dessa forma a classe $c^i_m$ é formada inicialmente pelo conjunto $\{e'_{i,j,m}\}$, em que $0 < j \leq n_i$ e $n_i$ é o número de amostras da aresta $E_i$. Esse é um bom agrupamento inicial, já que boa parte das amostras já estão localizadas no seu \emph{cluster} final. Em seguida são calculadas as distâncias de cada hipótese $e'_{i,j,l}$ da amostra $e_{i,j}$ para cada um dos centróides $(c^i_1, \dots, c^i_{k_i})$. Esse cálculo de distâncias serve para realocar as hipóteses para os \emph{clusters} mais próximos.
+
+No trabalho original \cite{celine} é dito que esse último passo seja repetido até que não haja mais trocas entre os \emph{clusters}, mas na prática precisou-se estabelecer um número máximo de iterações, pois muitas vezes o algoritmo repetia indefinidamente.
+
+% TODO: Esses passos são melhor explicados no algoritmo abaixo.
+
+Ao final das iterações a aresta $E_i$ possui um conjunto de \emph{clusters} $c^i_m = (\{e'_{i,j,m}\}, r^i_m)$, em que $r^i_m$ é descrito na equação.
+
+\begin{equation}
+r^i_m = \frac{\sum_{i} \Delta (e'_{i,j,m}, c^i_m)}{\textrm{numero de elementos do cluster } c^i_m}
+\end{equation}
+
+e $\Delta (e', c)$ é a função que calcula a distância do ponto $e'$ à reta $c$. O resíduo $r^i_m$ será usado para a próxima seção.
+
+\section{Obtendo as hipóteses de pose}
+
+Após obter as hipóteses de aresta, as hipóteses de pose são obtidas ao se escolher, para cada aresta $E_i$, uma classe $c^i_{p_i}$. A escolha é feita de forma aleatória, mas considerando o peso $w^i_m$ de cada hipótese de aresta.
+
+O peso $w^i_m$ é deduzido pela equação:
+
+\begin{equation}
+w^i_m = \begin{cases}
+    e^{-\lambda \left( \frac{r^i_m - r^i_{min}}{r^i_{max} - r^i_{min}}\right)^2 } & \mbox{se } r^i_{max} \neq r^i_{min} \\
+    1 & \mbox{senão}.
+\end{cases}
+\end{equation}
+
+em que $\lambda$ é um parâmetro que pode ser ajustado.
+
+Faz-se uma escolha aleatória com pesos para que todas as hipóteses de aresta tenham chance de serem escolhidas para formar uma pose, embora as arestas de maior peso tenham mais chances de serem escolhidas.
+
+Após isso é calculado o erro de reprojeção de cada pose formada. A que possuir menor erro é considerada a pose da cena atual e será usada para as próximas iterações do algoritmo.
 
 \section{Rascunho}
 
