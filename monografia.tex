@@ -1,52 +1,44 @@
-\documentclass[bsc]{ufpethesis/ufpethesis}
+\documentclass[12pt]{article}
 
+\usepackage{ic2/sbc-template}
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage[brazil]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[hidelinks]{hyperref}
 \usepackage{comment}
+\usepackage{mathtools}
+
+\newcommand{\figref}[1]{\figurename{} \ref{#1}}
+
+\hypersetup{
+    pdfauthor={Mailson Daniel Lira Menezes},
+    pdftitle={Aprimoramento da etapa de casamento de uma técnica de rastreamento baseado em arestas}
+}
+
+\sloppy
 
 \title{Aprimoramento da etapa de casamento de uma técnica de rastreamento baseado em arestas}
-\author{Mailson Daniel Lira Menezes}
-\date{\today} % TODO: mudar para a data da defesa
+\author{Mailson Daniel Lira Menezes\inst{1}}
+\address{Centro de Informática -- Universidade Federal de Pernambuco
+  (UFPE)\\
+  Recife -- PE -- Brasil
+  \email{mdlm@cin.ufpe.br}
+}
 
-\institute{Centro de Informática}
-\program{Graduação em Ciência da Computação}
-\majorfield{Ciência da Computação}
-\adviser[f]{Veronica Teichrieb}
-\coadviser{Francisco Paulo Magalhães Simões}
+% \date{\today} % TODO: mudar para a data da defesa
 
 \begin{document}
 
-%%
-%% Parte pré-textual
-%%
-\frontmatter
-
-% Folha de rosto
-\frontpage
-
-% Portada (apresentação)
-\presentationpage
-
-%%
-%% Parte textual
-%%
-\mainmatter
+\maketitle
 
 \include{monografia/chapter2}
 
 \include{monografia/chapter3}
 
-%%
-%% Parte pós-textual
-%%
-\backmatter
-
 % Bibliografia
 \nocite{*}
-\bibliographystyle{IEEEtran}
+\bibliographystyle{ic2/sbc}
 \bibliography{bibliography}
 
 \end{document}

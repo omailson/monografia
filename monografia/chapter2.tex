@@ -1,6 +1,6 @@
-\chapter{Conceitos básicos}
+\section{Conceitos básicos}
 
-\section{Rastreamento}
+\subsection{Rastreamento}
 
 Segundo \cite{lepetit}, rastrear um objeto é identificar sua posição na cena quando tanto o objeto quanto a câmera estão em movimento. Em outras palavras, é saber a localização de um objeto dada uma entrada em vídeo.
 
@@ -15,7 +15,7 @@ Ao se comparar as duas técnicas pode-se dizer que a baseada em modelos é mais 
 
 % Uma outra técnica de rastreamento é a baseada em \emph{Structure from Motion} (\emph{SfM}) \cite{teichrieb2007survey}. Nesta abordagem não é necessário um conhecimento prévio da cena e, por isso, é bastante útil quando o ambiente a ser rastreado é desconhecido. Apesar disso, a \emph{SfM} tem a desvantagem de ser bastante complexa e não tão eficiente para rastrear uma sequência em vídeo. Isso se deve ao fato de um vídeo conter bastante informação, e muitas vezes apenas uma pequena parte disso seria suficiente para rastrear o movimento da câmera \cite{drummondecipolla}. É nesse aspecto que o rastreamento baseado em modelos se destaca, pois são observados apenas pontos chaves da cena (como os contornos do modelo, por exemplo).
 
-\subsection{Rastreamento baseado em modelo}
+\subsubsection{Rastreamento baseado em modelo}
 
 Ao rastrear utilizando um modelo pré-definido, devemos estabelecer quais \emph{features} serão extraídas para realizar o rastreamento. Na literatura podemos encontrar exemplos de rastreamento utilizando tanto as arestas quanto a textura do modelo. O rastreamento baseado em texturas tenta casar a textura do modelo com a textura do objeto na imagem capturada.% citacao para texture based
 % Uma dessas \emph{features} que podem ser usadas é a textura do modelo. O rastreamento baseado em texturas tenta casar a textura do modelo com a textura do objeto na imagem capturada. 
@@ -24,16 +24,16 @@ Ao rastrear utilizando um modelo pré-definido, devemos estabelecer quais \emph{
 
 Uma outra \emph{feature} que pode ser extraída do modelo são as arestas. Neste caso as arestas do modelo são casadas com pontos de alto contraste da imagem \cite{drummondecipolla}. O rastreamento baseado em arestas será melhor explicado na seção seguinte.
 
-%\subsection{Rascunho}
+%\subsubsection{Rascunho}
 
-\section{Rastreamento por arestas}
+\subsection{Rastreamento por arestas}
 
 Nesta seção explicaremos sobre o rastreamento por arestas, em que as arestas do modelo são utilizadas para poder efetuar o casamento com as imagens capturadas. Tendo uma imagem representando o \emph{frame} atual e o modelo da pose anterior, o rastreamento por aresta consiste em extrair as arestas do \emph{frame} atual e tentar fazer associações com as arestas do modelo a fim de que se possa descobrir quais arestas do modelo correspondem com as arestas extraídas da imagem. Tendo essas correspondências, fica mais fácil definir qual o movimento feito pela câmera entre o \emph{frame} anterior (representado pelo modelo) e o \emph{frame} atual (representado pela imagem extraída da câmera).
 
 %Para a extração das arestas da imagem geralmente são utilizados algoritmos de detecção de borda, como o filtro Sobel.
 A vantagem dessa técnica é que arestas são relativamente mais fáceis de serem encontradas em uma imagem. Algoritmos para detecção de bordas são abundantes na literatura e já vem sido bastante estudado em processamento de imagens.%citation
 
-\subsection{Técnicas}
+\subsubsection{Técnicas}
 
 Uma das formas de fazer o casamento entre as arestas do modelo e as arestas da imagem é usar o que pode ser chamado de extração explícita das arestas. Utilizando algum algoritmo de detecção de linha, como a transformada de Hough, as arestas da imagem são extraídas para depois serem comparadas com as do modelo na pose anterior. %cite (Hough) [3] em VTetal
 
@@ -57,11 +57,11 @@ A extração explícita das arestas tem a vantagem de ser mais robusta, porém �
 Na primeira técnica a aresta parcialmente oclusa seria considerada duas arestas diferentes, enquanto que a amostragem de pontos seria capar de identificá-la como uma aresta só.
 
 \begin{comment}
-\subsection{Trabalhando com múltiplas hipóteses}
+\subsubsection{Trabalhando com múltiplas hipóteses}
 
 Algo comum de acontecer na etapa de casamento das amostras do modelo com os pontos de forte gradiente da imagem é que, ao percorrer a normal para achar pontos de forte gradiente, a busca pode retornar mais de um resultado. Ou seja, é possível haver mais de uma hipótese de pontos da imagem para serem casados com uma amostra do modelo. [isso parece ser muito específico]
 
-\subsection{Rascunho}
+\subsubsection{Rascunho}
 
 extração explícita de arestas (ruim por causa da oclusão \cite{drummondecipolla}) \\
 amostragem de pontos (sample points. a que eu uso) \\
