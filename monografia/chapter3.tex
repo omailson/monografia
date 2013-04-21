@@ -40,10 +40,10 @@ No trabalho original \cite{celine} é dito que esse último passo seja repetido 
 Ao final das iterações a aresta $E_i$ possui um conjunto de \emph{clusters} $c^i_m = (\{e'_{i,j,m}\}, r^i_m)$, em que $r^i_m$ é descrito na equação.
 
 \begin{equation}
-r^i_m = \frac{1}{N} \sum^{N}_{i = 0} \Delta (e'_{i,j,m}, c^i_m)
+r^i_m = \frac{1}{N} \sum^{N}_{j = 0} \Delta (e'_{i,j,m}, c^i_m)
 \end{equation}
 
-em que $N$ é o número de amostras da aresta $E_i$, e $\Delta (e', c)$ é a função que calcula a distância do ponto $e'$ à reta $c$. O resíduo $r^i_m$ será usado para a próxima seção.
+em que $N$ é o número de elementos do \emph{cluster} $c^i_m$, e $\Delta (e', c)$ é a função que calcula a distância do ponto $e'$ à reta $c$. O resíduo $r^i_m$ será usado para a próxima seção.
 
 \section{Obtendo as hipóteses de pose}
 
