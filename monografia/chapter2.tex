@@ -117,34 +117,13 @@ Independente das técnicas que serão apresentadas abaixo, o rastreamento basead
 
 \section{NULL! Seção a ser reescrita}
 
-Existem várias formas de rastrear um objeto na cena \cite{teichrieb2007survey} e entre elas existe o rastreamento baseado em modelo e o \emph{Structure from Motion} (\emph{SfM}).
-
-O rastreamento baseado em modelo é caracterizado pelo uso de um modelo 3D pré-definido do objeto a ser rastreado. O modelo serve para saber as características do objeto que serão usadas para rastrear.
-% Existem várias formas de rastrear um objeto na cena \cite{teichrieb2007survey} e uma delas é o rastreamento baseado em modelo. Este tipo de rastreamento é caracterizado pelo uso de um modelo 3D pré-definido do objeto a ser rastreado. Este modelo serve principalmente para se ter uma estimativa inicial do que vai ser rastreado.
-
-Na técnica baseada em \emph{Structure from Motion} (\emph{SfM}) \cite{teichrieb2007survey} não é necessário um conhecimento prévio da cena e, por isso, é bastante útil quando o ambiente a ser rastreado é desconhecido.
-
-Ao se comparar as duas técnicas pode-se dizer que a baseada em modelos é mais eficiente que a \emph{SfM} \cite{drummondecipolla}. A \emph{SfM} baseia-se na análise de todo o frame da sequência de vídeo para poder identificar um movimento na câmera e sabendo-se que poucos segundos de um vídeo pode conter bastante informação, essa análise pode se mostrar lenta. A técnica baseada em modelos, por sua vez, pode tirar proveito de um modelo já conhecido do objeto a ser rastreado. Com isso apenas pontos chaves (\emph{features}) precisam ser analisados para o rastreamento.
-
 % Uma outra técnica de rastreamento é a baseada em \emph{Structure from Motion} (\emph{SfM}) \cite{teichrieb2007survey}. Nesta abordagem não é necessário um conhecimento prévio da cena e, por isso, é bastante útil quando o ambiente a ser rastreado é desconhecido. Apesar disso, a \emph{SfM} tem a desvantagem de ser bastante complexa e não tão eficiente para rastrear uma sequência em vídeo. Isso se deve ao fato de um vídeo conter bastante informação, e muitas vezes apenas uma pequena parte disso seria suficiente para rastrear o movimento da câmera \cite{drummondecipolla}. É nesse aspecto que o rastreamento baseado em modelos se destaca, pois são observados apenas pontos chaves da cena (como os contornos do modelo, por exemplo).
-
-\subsection{Rastreamento baseado em modelo}
-
-Ao rastrear utilizando um modelo pré-definido, devemos estabelecer quais \emph{features} serão extraídas para realizar o rastreamento. Na literatura podemos encontrar exemplos de rastreamento utilizando tanto as arestas quanto a textura do modelo. O rastreamento baseado em texturas tenta casar a textura do modelo com a textura do objeto na imagem capturada.% citacao para texture based
-% Uma dessas \emph{features} que podem ser usadas é a textura do modelo. O rastreamento baseado em texturas tenta casar a textura do modelo com a textura do objeto na imagem capturada. 
-
-% Infelizmente esta abordagem não tem um bom desempenho com objetos reflexivos, já que isso pode atrapalhar na identificação da textura.% citation needed
-
-Uma outra \emph{feature} que pode ser extraída do modelo são as arestas. Neste caso as arestas do modelo são casadas com pontos de alto contraste da imagem \cite{drummondecipolla}. O rastreamento baseado em arestas será melhor explicado na seção seguinte.
-
-%\subsection{Rascunho}
 
 \section{Rastreamento por arestas}
 
-Nesta seção explicaremos sobre o rastreamento por arestas, em que as arestas do modelo são utilizadas para poder efetuar o casamento com as imagens capturadas. Tendo uma imagem representando o \emph{frame} atual e o modelo da pose anterior, o rastreamento por aresta consiste em extrair as arestas do \emph{frame} atual e tentar fazer associações com as arestas do modelo a fim de que se possa descobrir quais arestas do modelo correspondem com as arestas extraídas da imagem. Tendo essas correspondências, fica mais fácil definir qual o movimento feito pela câmera entre o \emph{frame} anterior (representado pelo modelo) e o \emph{frame} atual (representado pela imagem extraída da câmera).
-
 %Para a extração das arestas da imagem geralmente são utilizados algoritmos de detecção de borda, como o filtro Sobel.
-A vantagem dessa técnica é que arestas são relativamente mais fáceis de serem encontradas em uma imagem. Algoritmos para detecção de bordas são abundantes na literatura e já vem sido bastante estudado em processamento de imagens.%citation
+
+% A vantagem dessa técnica é que arestas são relativamente mais fáceis de serem encontradas em uma imagem. Algoritmos para detecção de bordas são abundantes na literatura e já vem sido bastante estudado em processamento de imagens.%citation
 
 \subsection{Técnicas}
 
