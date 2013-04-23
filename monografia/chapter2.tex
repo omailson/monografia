@@ -23,8 +23,8 @@ P = K[R | t]
 Em \eqref{matrix_p}, $K$ representa os parâmetros intrínsecos da câmera. Esses parâmetros, em nossos experimentos, não mudam no decorrer do rastreamento e são conhecidos previamente através de uma calibração da câmera feita a priori. O parâmetro $K$ também é conhecido como matriz de calibração da câmera \cite{lepetit} e contém informações como fator de escala, distância focal e o ponto de interseção do eixo óptico da câmera e o plano de projeção. O que foi discutido até agora pode ser observado na \figref{projection_scheme}.
 
 \begin{figure}[!ht]
-\textbf{FAZER:} colocar a figura do esquema de projeção de lepetit
-\caption{Esquema de projeção. Retirado de \cite{lepetit}}
+\centering\includegraphics[width=5in]{monografia/projection_scheme.png}
+\caption{Esquema de projeção em perspectiva. Observe na imagem que $(\mathbf{O}, \vec{i}, \vec{j}, \vec{k})$ é o sistema de coordenadas do mundo, $(\mathbf{C}, \vec{i_c}, \vec{j_c}, \vec{k_c})$ é o sistema de coordenadas da câmera, $\mathbf{M}$ é um ponto 3D e $\mathbf{m}$ é sua projeção 2D no plano. Retirado de \cite{lepetit}.}
 \label{projection_scheme}
 \end{figure}
 
@@ -53,12 +53,19 @@ Como foi dito anteriormente, existe na literatura vários tipos de informações
 \begin{figure}[!ht]
 	\centerline{
 		\subfloat[Exemplo de marcador externo]{
-			\textbf{FAZER:} Marcador
+			\includegraphics[width=0.25\textwidth]{monografia/pattSample1}
 			\label{marcador_modelo}
 		}
 		\hfil
 		\subfloat[Exemplo de marcador extraído de uma imagem]{
-			\textbf{FAZER:} Marcador deformado
+			\begin{tikzpicture}
+				\pgftext[at=\pgfpointorigin]{
+					\pgflowlevel{\pgftransformcm{1}{0.7}{0}{1}{\pgfpoint{0}{0}}}
+					% \pgfdeclareimage[height=0.2\textwidth]{deformedtag}{monografia/pattSample1} % on preample
+					% \pgfuseimage{deformedtag}
+					\includegraphics[height=1in]{monografia/pattSample1}
+				}
+			\end{tikzpicture}
 			\label{marcador_extraido}
 		}
 	}
@@ -84,11 +91,12 @@ A escolha entra textura ou arestas do modelo depende do objeto a ser rastreado. 
 			\label{textura_aresta_textura}
 		}
 		\hfil
-		\subfloat[Este objeto não possui textura, porém suas arestas são bem definidas. Imagem retirada de \cite{marchand_modelbased}]{
-			\shortstack{\textbf{FAZER:} Porca do artigo de\\marchand sobre model-based (1999)}
+		\subfloat[Este objeto não possui textura, porém suas arestas são bem definidas. Imagem retirada de \cite{marchand_modelbased}.]{
+			\includegraphics[width=0.25\textwidth]{monografia/textura_aresta_aresta}
 			\label{textura_aresta_aresta}
 		}
 	}
+	\caption{Dois tipos de objetos: um com textura e outro com arestas bem definidas}
 \end{figure}
 
 \subsection{Técnicas de rastreamento baseado em arestas}
@@ -96,8 +104,9 @@ A escolha entra textura ou arestas do modelo depende do objeto a ser rastreado. 
 Independente das técnicas que serão apresentadas abaixo, o rastreamento baseado em aresta segue praticamente o mesmo \emph{pipeline}. Primeiro é preciso saber a pose do \emph{frame} anterior. Se for o primeiro \emph{frame} este, ainda assim, terá que ser informado, e é por isso que nos nossos experimentos definimos uma pose inicial. Depois de obtida a pose do \emph{frame} anterior capturamos o \emph{frame} atual da sequência de vídeo. Essa imagem capturada será então analisada em busca de pontos de forte gradiente para a extração de bordas. Pegamos então as arestas do modelo que estão visíveis, projetadas utilizando a pose do quadro anterior. As arestas visíveis são aquelas que ao serem projetadas na tela não são oclusas por outras partes do objeto (considerando um objeto opaco). Em seguida as arestas visíveis são projetadas e são comparadas com as bordas extraídas das imagens. Cada aresta visível do modelo é casada com a borda mais próxima de sua projeção 2D (veja \figref{cubo_pipeline_drummond}). Esse casamento dá à aresta extraída da imagem uma estimativa inicial de sua posição 3D. Após isso fazermos o cálculo da pose para que as arestas do modelo 3D projetado na tela utilizando a pose calculada fique o mais próximo possível das arestas extraídas da imagem. Esta pose será então a pose do \emph{frame} atual.
 
 \begin{figure}[!ht]
-\shortstack{\textbf{FAZER:} pegar um cubo do pipeline de \cite{drummondecipolla}\\que mostra um cubo sólido com um wireframe tentando se encaixar}
-\caption{Casamento de arestas do modelo (\emph{wireframe}) com arestas do objeto na imagem (cubo cinza). Imagem retirada de \cite{drummondecipolla}}
+\centering\includegraphics[width=2in]{monografia/cubo_pipeline_drummond}
+\caption{Casamento de arestas do modelo (\emph{wireframe}) com arestas do objeto na imagem (cubo cinza). Imagem retirada de \cite{drummondecipolla}.}
+\label{cubo_pipeline_drummond}
 \end{figure}
 
 \section{NULL! Seção a ser reescrita}
