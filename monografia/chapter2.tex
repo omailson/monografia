@@ -1,8 +1,106 @@
 \chapter{Conceitos básicos}
 
-\section{Rastreamento}
+\section{Definição de rastreamento}
 
 Segundo \cite{lepetit}, rastrear um objeto é identificar sua posição na cena quando tanto o objeto quanto a câmera estão em movimento. Em outras palavras, é saber a posição e orientação da câmera virtual (ou pose da câmera) em relação ao objeto presente na cena.
+
+\section{Representação da câmera}
+
+Neste trabalho usaremos um modelo tradicional de câmera com orifício para representar a câmera virtual. A projeção 2D é formada a partir de dados 3D seguindo um modelo de projeção em perspectiva. A formação da imagem pode então ser definida como a projeção de pontos do espaço 3D para um plano 2D. Seja $M = [X, Y, Z]^T$ um ponto 3D em coordenadas de mundo e $m = [u, v]^T$ um ponto 2D em coordenadas de tela, eles se relacionam de acordo com a equação
+
+\begin{equation}
+\label{projection_eq}
+s\tilde{m} = P\tilde{M}
+\end{equation}
+
+em que $s$ é um fator de escala que indica a resolução em que o modelo será projetado na tela, $\tilde{m} = [u, v, 1]^T$ e $\tilde{M} = [X, Y, Z, 1]^T$ são os pontos $m$ e $M$ em coordenadas homogêneas, e $P$ é uma matriz de projeção em perspectiva $3 \times 4$. A matriz $P$ contém informações da câmera como parâmetros de calibração, posição da câmera no espaço 3D e orientação da câmera. Ela pode ser decomposta da seguinte forma:
+
+\begin{equation}
+\label{matrix_p}
+P = K[R | t]
+\end{equation}
+
+Em \eqref{matrix_p}, $K$ representa os parâmetros intrínsecos da câmera. Esses parâmetros, em nossos experimentos, não mudam no decorrer do rastreamento e são conhecidos previamente através de uma calibração da câmera feita a priori. O parâmetro $K$ também é conhecido como matriz de calibração da câmera \cite{lepetit} e contém informações como fator de escala, distância focal e o ponto de interseção do eixo óptico da câmera e o plano de projeção. O que foi discutido até agora pode ser observado na \figref{projection_scheme}.
+
+\begin{figure}[!ht]
+\textbf{FAZER:} colocar a figura do esquema de projeção de lepetit
+\caption{Esquema de projeção. Retirado de \cite{lepetit}}
+\label{projection_scheme}
+\end{figure}
+
+Ainda na equação \eqref{matrix_p}, $[R | t]$ é uma matriz $3 \times 4$ e representa os parâmetros extrínsicos da câmera. Tais parâmetros podem mudar no decorrer do rastreamento.
+
+Observando a equação \eqref{projection_eq} podemos dizer que tendo um ponto 2D $\tilde{m}$ da imagem e um fator de escala $s$ (que também é conhecido), para que o ponto $\tilde{M}$ seja projetado em $\tilde{m}$ precisamos descobrir a matriz $P$ da câmera que realize essa operação, ou seja, um $P$ que torne $P\tilde{M_i} \equiv \tilde{m_i}$ válido para todo $i$. Como foi visto em \eqref{matrix_p}, $K$ é um parâmetro conhecido da câmera, então o que queremos saber, na verdade, é a matriz $[R | t]$, que daqui para frente será chamada de \emph{pose da câmera}.
+
+\subsection{Cálculo da pose}
+
+O cálculo da pose é na verdade uma estimativa para que o ponto $\tilde{M_i}$ ao ser projetado em coordenadas de tela ($P\tilde{M_i}$) seja o mais próximo possível do ponto $m_i$, que é um ponto 2D extraído da imagem. Chamamos a distância do ponto projetado $P\tilde{M_i}$ para seu correspondente extraído da imagem ($m_i$) de erro de reprojeção. O nosso objetivo é encontrar uma pose ($[R | t]$) cuja soma dos erros de reprojeção seja a menos possível. Em outras palavras queremos resolver a equação
+
+\begin{equation}
+[R | t] = \argmin_{[R | t]} \sum_i \text{dist}^2(P\tilde{M_i}, m_i)
+\end{equation}
+
+Essa equação não fornece uma solução de forma fechada, por isso deve-se utilizar métodos de otimização como o Gauss-Newton ou o Levenberg–Marquardt.
+
+Estimadores robustos como um \emph{M-estimator} também podem servir, e são bastante úteis. O papel principal é eliminar a influência de \emph{outliers}, que são algumas poucas correspondências 2D-3D grosseiramente erradas, mas que podem influenciar bastante no resultado final.
+
+\section{Rastreamento}
+
+Para auxiliar no cálculo da pose é preciso extrair \emph{features}, que são componentes mais simples da cena como marcadores \cite{ref_marcadores}, arestas do objeto \cite{ref_arestas}, textura do objeto \cite{ref_textura}, pontos de interesse \cite{ref_pontosdeinteresse}; qualquer coisa que sirva para recuperar a pose (3D) da câmera virtual a partir de uma sequência de imagens 2D. Conhecendo a posição 3D dessas \emph{features} no quadro anterior e extraindo sua posição 2D no quadro atual já é um grande passo para realizar o rastreamento. A intenção dos algoritmos de rastreamento é descobrir uma pose da câmera que, ao usá-la para fazer a projeção 2D destas \emph{features} 3D tenhamos essas \emph{features} nas mesmas posições 2D das que foram extraídas do quadro atual.
+
+Como foi dito anteriormente, existe na literatura vários tipos de informações que podem ser usadas como \emph{features}. Uma das mais simples formas de rastreamento é a que insere marcadores externos na cena, como o da \figref{marcador_modelo}. Nesta técnica deve-se conhecer a priori o marcador a ser utilizado. O trabalho consiste então em encontrar o marcador em cada quadro e saber que operação feita na câmera (rotação, translação ou cisalhamento) deixaria o marcador tomado como modelo (\figref{marcador_modelo}) com a mesma configuração que o marcados extraído da imagem (\figref{marcador_extraido}).
+
+\begin{figure}[!ht]
+	\centerline{
+		\subfloat[Exemplo de marcador externo]{
+			\textbf{FAZER:} Marcador
+			\label{marcador_modelo}
+		}
+		\hfil
+		\subfloat[Exemplo de marcador extraído de uma imagem]{
+			\textbf{FAZER:} Marcador deformado
+			\label{marcador_extraido}
+		}
+	}
+	\caption{Exemplo de marcador e sua projeção}
+\end{figure}
+
+O uso de marcadores requer que uma interferência no ambiente seja feita e, apesar de simplificar o rastreamento 3D, nem sempre é usado. Isto acontece porque podem existir limitações técnicas que impeçam a introdução prévia de marcadores, como também pode existir uma limitação baseada na decisão do usuário final. Neste caso deve-se buscar \emph{features} que estejam naturalmente na cena, o que muitas vezes é parte do próprio objeto a ser rastreado. Abrir mão de marcadores externos torna o rastreamento muito mais desafiador, e a discussão dessas técnicas será o foco do resto do trabalho.
+
+\subsection{Rastreamento sem marcadores baseado em modelo}
+
+Algumas das técnicas de rastreamento sem marcadores baseiam-se no uso de um modelo 3D (feito em uma ferramenta CAD como o 3D Studio Max \cite{ref_3dsmax} ou Maya \cite{ref_maya}) do objeto a ser rasteado. Ter esse modelo é importante, já que a maioria das técnicas de rastreamento sem marcadores utiliza \emph{features} do próprio objeto. Considerando uma análise superficial, a ideia é equivalente ao método que utiliza marcadores: extrair as \emph{features} da imagem 2D capturada e tentar chegar a uma pose da câmera virtual que, ao ser usada para fazer a projeção 2D do modelo 3D do objeto, chegamos a uma imagem equivalente àquela capturada do objeto.
+
+As técnicas baseadas em modelo podem usar uma gama de informações do objeto para dar suporte ao processo de rastreamento sendo uma delas a textura do objeto \cite{teichrieb2007survey}. Existe técnica que aplica um modelo de distorção a uma imagem de referência \cite{ref_19tgchico}; outra que utiliza pontos de interesses, que se baseia no casamento de \emph{features} das imagens recuperadas com \emph{features} de uma imagem de template pré-definida \cite{lepetit}. Outra informação que pode ser usada além da textura são as arestas do objeto.
+
+O processo de casamento de aresta se assemelha com os processos descritos anteriormente: tendo as arestas do modelo CAD pré-definido, o objetivo é encontrar os pontos de forte gradiente da imagem para formar linhas (que serão as arestas do objeto) e então encontrar a pose que projeta as arestas do modelo 3D o mais próximo possível das arestas extraídas da imagem.
+
+A escolha entra textura ou arestas do modelo depende do objeto a ser rastreado. Na \figref{textura_aresta_textura} temos um objeto com textura cujas arestas não são bem definidas. Se realizarmos uma rotação no eixo $Z$, mostrado na imagem, dificilmente um algoritmo baseado em arestas irá percebê-la. Por outro lado temos o objeto mostrado na \figref{textura_aresta_aresta} em que as arestas são bem definidas, mas não possui textura.
+
+\begin{figure}[!ht]
+	\centerline{
+		\subfloat[Este objeto, por ser cilíndrico, não possui arestas bem definidas. No entanto seu desenho é um convite ao uso de técnicas de rastreamento baseadas em textura.]{
+			\shortstack{\textbf{FAZER:} Lata de coca-cola com\\um eixo Z atravessando no meio}
+			\label{textura_aresta_textura}
+		}
+		\hfil
+		\subfloat[Este objeto não possui textura, porém suas arestas são bem definidas. Imagem retirada de \cite{marchand_modelbased}]{
+			\shortstack{\textbf{FAZER:} Porca do artigo de\\marchand sobre model-based (1999)}
+			\label{textura_aresta_aresta}
+		}
+	}
+\end{figure}
+
+\subsection{Técnicas de rastreamento baseado em arestas}
+
+Independente das técnicas que serão apresentadas abaixo, o rastreamento baseado em aresta segue praticamente o mesmo \emph{pipeline}. Primeiro é preciso saber a pose do \emph{frame} anterior. Se for o primeiro \emph{frame} este, ainda assim, terá que ser informado, e é por isso que nos nossos experimentos definimos uma pose inicial. Depois de obtida a pose do \emph{frame} anterior capturamos o \emph{frame} atual da sequência de vídeo. Essa imagem capturada será então analisada em busca de pontos de forte gradiente para a extração de bordas. Pegamos então as arestas do modelo que estão visíveis, projetadas utilizando a pose do quadro anterior. As arestas visíveis são aquelas que ao serem projetadas na tela não são oclusas por outras partes do objeto (considerando um objeto opaco). Em seguida as arestas visíveis são projetadas e são comparadas com as bordas extraídas das imagens. Cada aresta visível do modelo é casada com a borda mais próxima de sua projeção 2D (veja \figref{cubo_pipeline_drummond}). Esse casamento dá à aresta extraída da imagem uma estimativa inicial de sua posição 3D. Após isso fazermos o cálculo da pose para que as arestas do modelo 3D projetado na tela utilizando a pose calculada fique o mais próximo possível das arestas extraídas da imagem. Esta pose será então a pose do \emph{frame} atual.
+
+\begin{figure}[!ht]
+\shortstack{\textbf{FAZER:} pegar um cubo do pipeline de \cite{drummondecipolla}\\que mostra um cubo sólido com um wireframe tentando se encaixar}
+\caption{Casamento de arestas do modelo (\emph{wireframe}) com arestas do objeto na imagem (cubo cinza). Imagem retirada de \cite{drummondecipolla}}
+\end{figure}
+
+\section{NULL! Seção a ser reescrita}
 
 Existem várias formas de rastrear um objeto na cena \cite{teichrieb2007survey} e entre elas existe o rastreamento baseado em modelo e o \emph{Structure from Motion} (\emph{SfM}).
 
