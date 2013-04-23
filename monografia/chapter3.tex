@@ -4,7 +4,7 @@ A técnica usada neste trabalho é baseada em arestas e usa um modelo pré-defin
 
 \section{Trabalhando com múltiplas hipóteses}
 
-Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre se consegue extrair com precisão as arestas da imagem. Na seção anterior descrevemos que um dos passos para a extração das arestas é a procura por pontos de alto gradiente na normal da aresta. Muitas vezes é possível encontrar vários desses pontos para cada amostra e neste caso temos múltiplas hipóteses de pontos da imagem correspondente ao ponto amostrado. Veja a \figref{cubo_0}.
+Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre se consegue extrair com precisão as arestas da imagem. Na seção anterior foi discutido que um dos passos para a extração das arestas é a procura por pontos de alto gradiente na normal da aresta. Muitas vezes é possível encontrar vários desses pontos para cada amostra, e neste caso obtém-se múltiplas hipóteses de pontos da imagem correspondente ao ponto amostrado. Veja a \figref{cubo_0}.
 
 %O que se faz neste caso é, para cada aresta do modelo, trabalhar com múltiplos correspondentes na imagem.
 
@@ -17,21 +17,21 @@ Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre s
 \label{cubo_0}
 \end{figure}
 
-Na \figref{cubo_0}, o cubo azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Note que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.
+Na \figref{cubo_0}, o cubo azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Nota-se que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.
 
-O trabalho com múltiplas hipóteses foi inicialmente proposto em \cite{multiplas_hipoteses}. Neste trabalho cada aresta $E_i$ (do modelo) reprojetada na imagem tem um conjunto $\{e_{i,j}\}$ de pontos amostrados. Cada ponto $e_{i,j}$ tem um conjunto $\{e'_{i,j,l}\}$ de hipóteses de correspondência. Em \cite{multiplas_hipoteses} a hipótese $e'_{i,j,l}$ é aquela que tem a menor distância da aresta reprojetada $E_i$. Então mesmo que sejam encontrados pontos de forte gradiente na normal da aresta $E_i$, aquele que mais se aproxima da aresta reprojetada é escolhido como correspondente a $e_{i,j}$. Tendo este conjunto de correspondências, o processo continua como no caso de hipótese única.
+O trabalho com múltiplas hipóteses foi inicialmente proposto em \cite{multiplas_hipoteses}. Neste trabalho cada aresta $E_i$ (do modelo) projetada na imagem tem um conjunto $\{e_{i,j}\}$ de pontos amostrados. Cada ponto $e_{i,j}$ tem um conjunto $\{e'_{i,j,l}\}$ de hipóteses de correspondência. Em \cite{multiplas_hipoteses} a hipótese $e'_{i,j,l}$ é aquela que tem a menor distância da aresta projetada $E_i$. Então mesmo que sejam encontrados pontos de forte gradiente na normal da aresta $E_i$, aquele que mais se aproxima da aresta projetada é escolhido como correspondente a $e_{i,j}$. Tendo este conjunto de correspondências, o processo continua como no caso de hipótese única.
 
 \section{Descrição do algoritmo}
 
-O algoritmo proposto em \cite{celine} funciona de forma diferente. Ao invés de se trabalhar com múltiplas hipóteses dos pontos amostrados para se chegar a uma pose, trabalhamos com múltiplas hipóteses da própria pose.
+O algoritmo proposto em \cite{celine} funciona de forma diferente. Ao invés de se trabalhar com múltiplas hipóteses dos pontos amostrados para se chegar a uma pose, são utilizadas múltiplas hipóteses da própria pose.
 
 \subsection{Extraindo a hipótese de aresta}
 
-Tentar todas as combinações de hipóteses $e'_{i,j,l}$ possíveis para obter as hipóteses de pose não é uma estratégia válida. Para resolver esse problema agrupamos $k_i$ conjuntos de $e'_{i,j,l}$ (para cada aresta $E_i$), e de cada conjunto obtemos uma hipótese $E'_{i,k}$ de aresta.
+Tentar todas as combinações de hipóteses $e'_{i,j,l}$ possíveis para obter as hipóteses de pose não é uma estratégia válida. Para resolver esse problema $k_i$ conjuntos de $e'_{i,j,l}$ (para cada aresta $E_i$) são agrupados, e de cada conjunto é obtida uma hipótese $E'_{i,k}$ de aresta.
 
-Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada aresta são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que chamaremos de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
+Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada aresta são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que será chamada de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
 
-Inicialmente agrupamos as hipóteses $e'_{i,j,l}$ da aresta $E_i$ nas classes $(c^i_1, \dots, c^i_{k_i})$ na ordem em que elas foram encontradas na busca pela normal. Dessa forma a classe $c^i_m$ é formada inicialmente pelo conjunto $\{e'_{i,j,m}\}$, em que $0 < j \leq n_i$ e $n_i$ é o número de amostras da aresta $E_i$. Esse é um bom agrupamento inicial, já que boa parte das amostras já estão localizadas no seu \emph{cluster} final. Em seguida são calculadas as distâncias de cada hipótese $e'_{i,j,l}$ da amostra $e_{i,j}$ para cada um dos centróides $(c^i_1, \dots, c^i_{k_i})$. Esse cálculo de distâncias serve para realocar as hipóteses para os \emph{clusters} mais próximos.
+Inicialmente as hipóteses $e'_{i,j,l}$ da aresta $E_i$ são agrupadas nas classes $(c^i_1, \dots, c^i_{k_i})$ na ordem em que elas foram encontradas na busca pela normal. Dessa forma a classe $c^i_m$ é formada inicialmente pelo conjunto $\{e'_{i,j,m}\}$, em que $0 < j \leq n_i$ e $n_i$ é o número de amostras da aresta $E_i$. Esse é um bom agrupamento inicial, já que boa parte das amostras já estão localizadas no seu \emph{cluster} final. Em seguida são calculadas as distâncias de cada hipótese $e'_{i,j,l}$ da amostra $e_{i,j}$ para cada um dos centróides $(c^i_1, \dots, c^i_{k_i})$. Esse cálculo de distâncias serve para realocar as hipóteses para os \emph{clusters} mais próximos.
 
 No trabalho original \cite{celine} é dito que esse último passo seja repetido até que não haja mais trocas entre os \emph{clusters}, mas na prática precisou-se estabelecer um número máximo de iterações, pois muitas vezes o algoritmo repetia indefinidamente.
 
@@ -73,7 +73,7 @@ Após isso é calculado o erro de reprojeção de cada pose formada. A que possu
 \label{cubo_arestas}
 \end{figure}
 
-Na \figref{cubo_arestas} extraímos as hipóteses de aresta a partir das hipóteses das amostras. A escolha das arestas foi feita de maneira que para cada amostra escolhida, a primeira hipótese encontrada irá compor a primeira aresta; a segunda hipótese fará parte da segunda aresta e assim por diante.
+A \figref{cubo_arestas} ilustra que as hipóteses de aresta são extraídas a partir das hipóteses das amostras. A escolha das arestas foi feita de maneira que para cada amostra escolhida, a primeira hipótese encontrada irá compor a primeira aresta; a segunda hipótese fará parte da segunda aresta e assim por diante.
 
 \begin{figure}[ht!]
 \centering
