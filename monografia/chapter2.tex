@@ -38,6 +38,7 @@ O cálculo da pose é na verdade uma estimativa para que o ponto $\tilde{M_i}$, 
 
 \begin{equation}
 [R | t] = \argmin_{[R | t]} \sum_i \text{dist}^2(P\tilde{M_i}, m_i)
+\label{calculo_pose}
 \end{equation}
 
 Essa equação não fornece uma solução polinomial de forma fechada, por isso métodos de otimização como o Gauss-Newton ou o Levenberg–Marquardt devem ser utilizados.
@@ -125,8 +126,62 @@ Na primeira técnica são extraídos segmentos de reta da imagem utilizando algu
 \label{carro_extracao_explicita}
 \end{figure}
 
+\subsection{Amostragem de pontos}
+
+A técnica de amostragem de pontos \cite{drummondecipolla} apresenta outra maneira de fazer o casamento entre as arestas do modelo e as arestas do objeto. Neste caso as arestas da imagem não são extraídas explicitamente para depois serem comparadas com as arestas projetadas no modelo, como na abordagem anterior.
+
+Cada aresta do modelo, que será chamada de $E_i$, é dividida de modo que se obtenha $n_i$ pontos amostrados, sendo $\{e_{i,j}\}$ o conjunto dessas amostras de $E_i$. A técnica de amostragem de pontos associa pontos do modelo 3D com pontos 2D extraídos da imagem. A extração desses pontos é feita a partir de uma busca de pontos de forte gradiente, chamados de $e'_{i,j}$, na normal de cada amostra $e_{i,j}$, como pode ser visto na \figref{amostragem_de_pontos}.
+
+\begin{figure}[!ht]
+\textbf{FAZER:} amostragem de pontos
+\label{amostragem_de_pontos}
+\caption{Diagrama de pontos amostrados}
+\end{figure}
+
+Tendo em vista esse casamento de amostras do modelo com amostras do objeto, o objetivo do algoritmo é encontrar uma pose que minimize a diferença entre a projeção da amostra, $P \cdot e_{i,j}$, e seu correspondente na imagem capturada. Utilizando a equação \eqref{calculo_pose}, o problema pode ser descrito como
+
+\begin{equation}
+[R | t] = \argmin_{[R | t]} \sum_i \text{dist}^2(P \cdot e_{i,j}, e'_{i,j})
+\label{calculo_pose_amostragem}
+\end{equation}
+
+É importante lembrar que somente as arestas visíveis do modelos são usadas, porém pode existir o caso em que a aresta esteja parcialmente visível, e uma das vantagens desta abordagem é poder lidar com esse caso, como mostra a \figref{occlusion}.
+
+Outra vantagem é que a busca por pontos de forte gradiente na imagem é bastante simplificada. Ela acontece apenas em uma dimensão e somente nas normais das amostra do modelo o que torna a execução do algoritmo bastante rápida.
+
+\subsection{Múltiplas hipóteses}
+
+Na técnica de amostragem de pontos pode ocorrer de, na busca pela normal, existir mais de um ponto de alto contraste. Uma das alternativas para a escolha do ponto extraído que seria casado com a amostra do modelo seria escolher a opção de maior gradiente. No entanto essa escolha nem sempre é uma boa opção, pois um alto contraste nem sempre significa que o ponto tem maiores chances de pertencer ao modelo. Na \figref{sem_multiplas_hipoteses} observa-se que objetos externos podem confundir o casamento das amostras.
+
+\begin{figure}[!ht]
+	\centerline{
+		\subfloat[Experimento com hipótese única. Observe que os pontos do controle remoto (de maior contraste) confundem o rastreamento]{
+			\includegraphics[width=0.5\textwidth]{monografia/sem_multiplas_hipoteses}
+			\label{sem_multiplas_hipoteses}
+		}
+		\hfil
+		\subfloat[Experimento com múltiplas hipóteses]{
+			\includegraphics[width=0.5\textwidth]{monografia/com_multiplas_hipoteses}
+			\label{com_multiplas_hipoteses}
+		}
+	}
+	\caption{Resultado de um rastreamento com múltiplas hipóteses e com hipótese única}
+\end{figure}
+
+Para este tipo de problema uma boa solução é o uso de múltiplas hipóteses da amostra. Ou seja, cada amostra $e_{i,j}$ está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, e somente as correspondências mais prováveis seriam usadas no processo de minimização.
+
+Para fins práticos as hipóteses mais prováveis são aquelas que mais se aproximam da amostra projetada. Utilizando estas informações e a equação \eqref{calculo_pose_amostragem} pode-se chegar à seguinte fórmula de cálculo de pose:
+
+\begin{equation}
+[R | t] = \argmin_{[R | t]} \sum_i \text{dist}^2(P \cdot e_{i,j}, \text{mindist}(e'_{i,j,l}, P \cdot e_{i,j}))
+\end{equation}
+
+em que $\text{mindist}(e'_{i,j,l}, P \cdot e_{i,j})$ resulta na hipótese com a menor distância da amostra projetada.
+
+\begin{comment}
 \section{NULL! Seção a ser reescrita}
 
+Pule para o próximo capítulo
 % Uma outra técnica de rastreamento é a baseada em \emph{Structure from Motion} (\emph{SfM}) \cite{teichrieb2007survey}. Nesta abordagem não é necessário um conhecimento prévio da cena e, por isso, é bastante útil quando o ambiente a ser rastreado é desconhecido. Apesar disso, a \emph{SfM} tem a desvantagem de ser bastante complexa e não tão eficiente para rastrear uma sequência em vídeo. Isso se deve ao fato de um vídeo conter bastante informação, e muitas vezes apenas uma pequena parte disso seria suficiente para rastrear o movimento da câmera \cite{drummondecipolla}. É nesse aspecto que o rastreamento baseado em modelos se destaca, pois são observados apenas pontos chaves da cena (como os contornos do modelo, por exemplo).
 
 \section{Rastreamento por arestas}
@@ -148,6 +203,7 @@ Outra forma de trabalhar com rastreamento baseado em arestas é utilizando a té
 Em outras palavras o casamento das amostras do modelo com os pontos extraídos da imagem acontece da seguinte forma: primeiro o modelo do \emph{frame} anterior é renderizado a fim de ter uma estimativa inicial da posição do objeto no frame atual; Para cada aresta do modelo são extraídos $N$ amostras que posteriormente serão comparadas com a imagem obtida do frame atual; Em cada amostra do modelo é feita uma busca na normal da aresta a fim de encontrar pontos de forte gradiente (bordas), o que podemos supor que são pontos da aresta da imagem. A partir do casamento das amostras do modelo com os pontos de forte gradientes da imagem, pode ser feita uma estimativa do movimento da câmera.
 
 A extração explícita das arestas tem a vantagem de ser mais robusta, porém é restrita apenas a objetos poligonais. A amostragem de pontos, por sua vez, mostra-se bastante útil quando as arestas não são formadas por retas. Há também a vantagem de trabalhar melhor com arestas oclusas, como mostra a \figref{occlusion}.
+\end{comment}
 
 \begin{figure}[ht!]
 \centering
@@ -156,7 +212,7 @@ A extração explícita das arestas tem a vantagem de ser mais robusta, porém �
 \label{occlusion}
 \end{figure}
 
-Na primeira técnica a aresta parcialmente oclusa seria considerada duas arestas diferentes, enquanto que a amostragem de pontos seria capar de identificá-la como uma aresta só.
+% Na primeira técnica a aresta parcialmente oclusa seria considerada duas arestas diferentes, enquanto que a amostragem de pontos seria capar de identificá-la como uma aresta só.
 
 \begin{comment}
 \subsection{Trabalhando com múltiplas hipóteses}
