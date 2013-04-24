@@ -133,9 +133,9 @@ A técnica de amostragem de pontos \cite{drummondecipolla} apresenta outra manei
 Cada aresta do modelo, que será chamada de $E_i$, é dividida de modo que se obtenha $n_i$ pontos amostrados, sendo $\{e_{i,j}\}$ o conjunto dessas amostras de $E_i$. A técnica de amostragem de pontos associa pontos do modelo 3D com pontos 2D extraídos da imagem. A extração desses pontos é feita a partir de uma busca de pontos de forte gradiente, chamados de $e'_{i,j}$, na normal de cada amostra $e_{i,j}$, como pode ser visto na \figref{amostragem_de_pontos}.
 
 \begin{figure}[!ht]
-\textbf{FAZER:} amostragem de pontos
+\centering\includegraphics{monografia/sample_point_diagram}
+\caption{Diagrama de pontos amostrados. Pode-se observar que a aresta $E_0$ da imagem possui $n_0$ amostras e cada uma delas está associada a uma hipótese $e'_{i,j}$, resultado da busca na normal da amostra.}
 \label{amostragem_de_pontos}
-\caption{Diagrama de pontos amostrados}
 \end{figure}
 
 Tendo em vista esse casamento de amostras do modelo com amostras do objeto, o objetivo do algoritmo é encontrar uma pose que minimize a diferença entre a projeção da amostra, $P \cdot e_{i,j}$, e seu correspondente na imagem capturada. Utilizando a equação \eqref{calculo_pose}, o problema pode ser descrito como
