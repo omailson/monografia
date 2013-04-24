@@ -151,7 +151,16 @@ Outra vantagem é que a busca por pontos de forte gradiente na imagem é bastant
 
 \subsection{Múltiplas hipóteses}
 
-Na técnica de amostragem de pontos pode ocorrer de, na busca pela normal, existir mais de um ponto de alto contraste. Uma das alternativas para a escolha do ponto extraído que seria casado com a amostra do modelo seria escolher a opção de maior gradiente. No entanto essa escolha nem sempre é uma boa opção, pois um alto contraste nem sempre significa que o ponto tem maiores chances de pertencer ao modelo. Na \figref{sem_multiplas_hipoteses} observa-se que objetos externos podem confundir o casamento das amostras.
+Um dos problemas que ocorrem nas técnicas \emph{edge based} é que nem sempre se consegue extrair com precisão as arestas da imagem. Na busca por pontos na normal da amostra podem existir mais de um ponto de forte gradiente devido a ruído da câmera, objetos externos na cena, sombra do objeto ou até arestas do próprio objeto, dependendo da pose. A \figref{cubo_0} ilustra um exemplo em que mais de um ponto de forte gradiente é encontrado.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics{monografia/cubo_exemplo}
+\caption{O cubo azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Nota-se que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.}
+\label{cubo_0}
+\end{figure}
+
+Neste caso é preciso escolher com qual dos pontos achados será feito o casamento da amostra. Uma das alternativas para a escolha do ponto extraído seria escolher a opção de maior gradiente. No entanto essa escolha nem sempre é uma boa opção, pois um alto contraste nem sempre significa que o ponto tem maiores chances de pertencer ao modelo. Na \figref{sem_multiplas_hipoteses} observa-se que objetos externos podem confundir o casamento das amostras.
 
 \begin{figure}[!ht]
 	\centerline{
@@ -168,7 +177,7 @@ Na técnica de amostragem de pontos pode ocorrer de, na busca pela normal, exist
 	\caption{Resultado de um rastreamento com múltiplas hipóteses e com hipótese única}
 \end{figure}
 
-Para este tipo de problema uma boa solução é o uso de múltiplas hipóteses da amostra. Ou seja, cada amostra $e_{i,j}$ está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, e somente as correspondências mais prováveis seriam usadas no processo de minimização.
+Para este tipo de problema uma boa solução é o uso de múltiplas hipóteses da amostra \cite{multiplas_hipoteses}. Ou seja, cada amostra $e_{i,j}$ está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, e somente as correspondências mais prováveis seriam usadas no processo de minimização.
 
 Para fins práticos as hipóteses mais prováveis são aquelas que mais se aproximam da amostra projetada. Utilizando estas informações e a equação \eqref{calculo_pose_amostragem} pode-se chegar à seguinte fórmula de cálculo de pose:
 

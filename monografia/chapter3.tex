@@ -2,6 +2,7 @@
 
 A técnica usada neste trabalho é baseada em arestas e usa um modelo pré-definido para a pose inicial. A extração das arestas é feita por amostragem de pontos, descrita na seção anterior.
 
+\begin{comment}
 \section{Trabalhando com múltiplas hipóteses}
 
 Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre se consegue extrair com precisão as arestas da imagem. Na seção anterior foi discutido que um dos passos para a extração das arestas é a procura por pontos de alto gradiente na normal da aresta. Muitas vezes é possível encontrar vários desses pontos para cada amostra, e neste caso obtém-se múltiplas hipóteses de pontos da imagem correspondente ao ponto amostrado. Veja a \figref{cubo_0}.
@@ -10,16 +11,8 @@ Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre s
 
 %Como existem múltiplas hipóteses de correspondência em cada amostra do modelo, pode-se concluir que existirão múltiplas hipóteses de arestas para compor a pose da cena atual, como mostra a \figref{cubo_0}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics{monografia/cubo_exemplo}
-\caption{}
-\label{cubo_0}
-\end{figure}
-
-Na \figref{cubo_0}, o cubo azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Nota-se que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.
-
 O trabalho com múltiplas hipóteses foi inicialmente proposto em \cite{multiplas_hipoteses}. Neste trabalho cada aresta $E_i$ (do modelo) projetada na imagem tem um conjunto $\{e_{i,j}\}$ de pontos amostrados. Cada ponto $e_{i,j}$ tem um conjunto $\{e'_{i,j,l}\}$ de hipóteses de correspondência. Em \cite{multiplas_hipoteses} a hipótese $e'_{i,j,l}$ é aquela que tem a menor distância da aresta projetada $E_i$. Então mesmo que sejam encontrados pontos de forte gradiente na normal da aresta $E_i$, aquele que mais se aproxima da aresta projetada é escolhido como correspondente a $e_{i,j}$. Tendo este conjunto de correspondências, o processo continua como no caso de hipótese única.
+\end{comment}
 
 \section{Descrição do algoritmo}
 
