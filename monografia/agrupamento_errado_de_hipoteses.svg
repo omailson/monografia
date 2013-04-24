@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <defs/>
+    <g>
+        <g latexdraw:type="picture" id="id144">
+            <image
+                xlink:href="/home/mailson/monografia/monografia/cubo_lapis-small.jpg"
+                x="50.0" y="50.0" height="227" width="320"/>
+        </g>
+        <g latexdraw:type="joinedLines" id="id146">
+            <polyline
+                points="165.41113355871735,109.90957609208235 240.56676583806433,76.0 319.4822409392244,129.78545352578425 239.2728901778661,177.64956537465093 166.40577389761052,109.05584557820688 158.0,191.45646178823228 224.58882480664602,259.31926828098835 242.15906963759653,176.04652053314103 318.78082527117823,127.76474393931011 292.1438510638368,210.95147652486304 223.69192602470167,259.2148520947472 224.8820494774929,256.44482818063864 "
+                stroke-width="2.0" stroke="blue" fill="none" latexdraw:rotationAngle="0.10854888567261067"/>
+        </g>
+        <g latexdraw:type="dot" id="id149" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="164.0 130.0">
+            <circle r="3.0" fill="red" cx="164.0" cy="130.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id150" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="162.0 156.0">
+            <circle r="3.0" fill="red" cx="162.0" cy="156.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id151" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="159.0 178.0">
+            <circle r="3.0" fill="red" cx="159.0" cy="178.0"/>
+        </g>
+        <g latexdraw:type="dot" id="id152" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="143.0 123.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="140.4500000178814" y="120.4500000178814"
+                stroke="#02a100" fill="#02a100" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id153" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="120.0 117.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="117.4500000178814" y="114.4500000178814"
+                stroke="black" fill="black" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id154" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="143.0 149.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="140.4500000178814" y="146.4500000178814"
+                stroke="black" fill="black" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id155" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="104.0 139.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="101.4500000178814" y="136.4500000178814"
+                stroke="#02a100" fill="#02a100" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id156" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="144.0 176.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="141.4500000178814" y="173.4500000178814"
+                stroke="black" fill="black" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id157" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="122.0 172.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="119.4500000178814" y="169.4500000178814"
+                stroke="#02a100" fill="#02a100" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id158" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="121.0 143.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="118.4500000178814" y="140.4500000178814"
+                stroke="black" fill="black" stroke-width="0.3"/>
+        </g>
+        <g latexdraw:type="dot" id="id159" latexdraw:size="6.0"
+            latexdraw:dotShape="square*" latexdraw:position="105.0 114.0">
+            <rect width="5.099999964237213" height="5.099999964237213"
+                x="102.4500000178814" y="111.4500000178814"
+                stroke="black" fill="black" stroke-width="0.3"/>
+        </g>
+    </g>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:displayBorders>false</latexdraw:displayBorders>
+            <latexdraw:autoAdjust>true</latexdraw:autoAdjust>
+            <latexdraw:ppc>50</latexdraw:ppc>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:unit>cm</latexdraw:unit>
+            <latexdraw:classicGrid>false</latexdraw:classicGrid>
+            <latexdraw:gridGap>10</latexdraw:gridGap>
+            <latexdraw:code>0</latexdraw:code>
+            <latexdraw:displayGrid>true</latexdraw:displayGrid>
+            <latexdraw:magneticGrid>false</latexdraw:magneticGrid>
+            <latexdraw:autoUpdate>true</latexdraw:autoUpdate>
+            <latexdraw:version>2.0.8</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1340</latexdraw:width>
+                <latexdraw:height>775</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>30</latexdraw:x>
+                <latexdraw:y>-3</latexdraw:y>
+            </latexdraw:position>
+            <latexdraw:dividerPosition>0.7850746268656716</latexdraw:dividerPosition>
+            <latexdraw:displayCodePanel>true</latexdraw:displayCodePanel>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:delimitorOpacity>130</latexdraw:delimitorOpacity>
+        </latexdraw:metadata>
+    </metadata>
+</svg>

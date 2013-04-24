@@ -14,11 +14,31 @@ Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre s
 O trabalho com múltiplas hipóteses foi inicialmente proposto em \cite{multiplas_hipoteses}. Neste trabalho cada aresta $E_i$ (do modelo) projetada na imagem tem um conjunto $\{e_{i,j}\}$ de pontos amostrados. Cada ponto $e_{i,j}$ tem um conjunto $\{e'_{i,j,l}\}$ de hipóteses de correspondência. Em \cite{multiplas_hipoteses} a hipótese $e'_{i,j,l}$ é aquela que tem a menor distância da aresta projetada $E_i$. Então mesmo que sejam encontrados pontos de forte gradiente na normal da aresta $E_i$, aquele que mais se aproxima da aresta projetada é escolhido como correspondente a $e_{i,j}$. Tendo este conjunto de correspondências, o processo continua como no caso de hipótese única.
 \end{comment}
 
-Apesar de trabalhar com múltiplas hipóteses, o algoritmo proposto em \cite{celine} funciona de forma diferente. Ao invés de usar  as múltiplas hipóteses dos pontos amostrados para o cálculo da pose, são utilizadas múltiplas hipóteses da própria pose.
+Como foi visto anteriormente, a técnica de múltiplas hipóteses escolhe um dos candidatos para ser associado com a amostra do modelo sendo escolhido como correspondente o candidato que está mais próximo da amostra projetada. Entretanto isso nem sempre resulta na melhor pose final. Outros pontos de forte gradiente como objetos externos ou até uma outra aresta do próprio objeto podem confundir todo o cálculo da pose só porque estão mais próximos de uma determinada aresta do modelo, como mostra a \figref{multiplas_hipoteses_errada}. Uma forma de contornar essa situação seria também escolher outras hipóteses (não somente a mais próxima) e calcular novas poses. O trabalho proposto em \cite{celine} é exatamente calcular diversas poses para então escolher a melhor entre elas.
+
+\begin{figure}[!ht]
+\centering\includegraphics{monografia/multiplas_hipoteses_errada}
+\caption{Casamento de hipóteses errado. O algoritmo encontrou múltiplas hipóteses para as amostras, mas optou por casar com as hipóteses erradas porque estavam mais próximas.}
+\label{multiplas_hipoteses_errada}
+\end{figure}
+
+Combinar todos os possíveis casamentos amostra-hipótese não é uma estratégia válida, não só por questão de performance. Um outro problema dessa estratégia é que nem sempre um agrupamento de hipóteses revela uma possível aresta do objeto. Na \figref{agrupamento_errado_de_hipoteses} a escolha das hipóteses vermelhas claramente não resultaria em uma pose válida. Para resolver essa questão, as hipóteses poderiam ser escolhidas de forma que fossem o mais próximo possível de uma reta. Sendo assim, ao invés de combinar diferentes hipóteses de pontos amostrados uma boa estratégia é combinar diferentes hipóteses de aresta.
+
+\begin{figure}[!ht]
+\centering\includegraphics{monografia/agrupamento_errado_de_hipoteses}
+\caption{Hipóteses agrupadas sem formar uma linha. Os pontos vermelhos são as amostras do modelo; os quadrados são as hipóteses de cada amostras; os quadrados de cor verde são as hipóteses escolhidas.}
+\label{agrupamento_errado_de_hipoteses}
+\end{figure}
 
 \section{Extraindo a hipótese de aresta}
 
-As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$ (uma das hipóteses da amostra $e_{i,j}$) e extraindo a reta que mais se aproxima desse conjunto de pontos. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
+As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$ (uma das hipóteses da amostra $e_{i,j}$, como mostra a \figref{multiplas_hipoteses_celine}) e extraindo a reta que mais se aproxima desse conjunto de pontos. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
+
+\begin{figure}[!ht]
+\centering\includegraphics[width=0.9\textwidth]{monografia/multiplas_hipoteses_celine}
+\caption{Visualização das múltiplas hipóteses. Figura retirada de \cite{celine}.}
+\label{multiplas_hipoteses_celine}
+\end{figure}
 
 Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada aresta são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que será chamada de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
 
