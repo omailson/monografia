@@ -14,13 +14,11 @@ Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre s
 O trabalho com múltiplas hipóteses foi inicialmente proposto em \cite{multiplas_hipoteses}. Neste trabalho cada aresta $E_i$ (do modelo) projetada na imagem tem um conjunto $\{e_{i,j}\}$ de pontos amostrados. Cada ponto $e_{i,j}$ tem um conjunto $\{e'_{i,j,l}\}$ de hipóteses de correspondência. Em \cite{multiplas_hipoteses} a hipótese $e'_{i,j,l}$ é aquela que tem a menor distância da aresta projetada $E_i$. Então mesmo que sejam encontrados pontos de forte gradiente na normal da aresta $E_i$, aquele que mais se aproxima da aresta projetada é escolhido como correspondente a $e_{i,j}$. Tendo este conjunto de correspondências, o processo continua como no caso de hipótese única.
 \end{comment}
 
-\section{Descrição do algoritmo}
+Apesar de trabalhar com múltiplas hipóteses, o algoritmo proposto em \cite{celine} funciona de forma diferente. Ao invés de usar  as múltiplas hipóteses dos pontos amostrados para o cálculo da pose, são utilizadas múltiplas hipóteses da própria pose.
 
-O algoritmo proposto em \cite{celine} funciona de forma diferente. Ao invés de se trabalhar com múltiplas hipóteses dos pontos amostrados para se chegar a uma pose, são utilizadas múltiplas hipóteses da própria pose.
+\section{Extraindo a hipótese de aresta}
 
-\subsection{Extraindo a hipótese de aresta}
-
-Tentar todas as combinações de hipóteses $e'_{i,j,l}$ possíveis para obter as hipóteses de pose não é uma estratégia válida. Para resolver esse problema $k_i$ conjuntos de $e'_{i,j,l}$ (para cada aresta $E_i$) são agrupados, e de cada conjunto é obtida uma hipótese $E'_{i,k}$ de aresta.
+As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$ (uma das hipóteses da amostra $e_{i,j}$) e extraindo a reta que mais se aproxima desse conjunto de pontos. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
 
 Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada aresta são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que será chamada de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
 
@@ -30,7 +28,7 @@ No trabalho original \cite{celine} é dito que esse último passo seja repetido 
 
 % TODO: Esses passos são melhor explicados no algoritmo abaixo.
 
-Ao final das iterações a aresta $E_i$ possui um conjunto de \emph{clusters} $c^i_m = (\{e'_{i,j,m}\}, r^i_m)$, em que $r^i_m$ é descrito na equação.
+Ao final das iterações a aresta $E_i$ possui um conjunto de \emph{clusters} $c^i_m = (\{e'_{i,j,m}\}, r^i_m)$, sendo que $r^i_m$ é descrito na equação.
 
 \begin{equation}
 r^i_m = \frac{1}{N} \sum^{N}_{j = 0} \Delta (e'_{i,j,m}, c^i_m)
@@ -40,7 +38,7 @@ em que $N$ é o número de elementos do \emph{cluster} $c^i_m$, e $\Delta (e', c
 
 \section{Obtendo as hipóteses de pose}
 
-Após obter as hipóteses de aresta, as hipóteses de pose são obtidas ao se escolher, para cada aresta $E_i$, uma classe $c^i_{p_i}$. A escolha é feita de forma aleatória, mas considerando o peso $w^i_m$ de cada hipótese de aresta.
+Após extrair as hipóteses de aresta, as hipóteses de pose são obtidas ao se escolher, para cada aresta $E_i$, uma classe $c^i_{p_i}$. A escolha é feita de forma aleatória, mas considerando o peso $w^i_m$ de cada hipótese de aresta.
 
 O peso $w^i_m$ é deduzido pela equação:
 
@@ -57,6 +55,7 @@ Faz-se uma escolha aleatória com pesos para que todas as hipóteses de aresta t
 
 Após isso é calculado o erro de reprojeção de cada pose formada. A que possuir menor erro é considerada a pose da cena atual e será usada para as próximas iterações do algoritmo.
 
+\begin{comment}
 \section{Rascunho}
 
 \begin{figure}[ht!]
@@ -80,6 +79,7 @@ No algoritmo usado nesse trabalho, baseado em \cite{celine}, é feita uma cluste
 \section{Escolha da pose}
 
 Para cada aresta da pose anterior, uma das hipóteses de aresta é escolhida aleatoriamente e assim será formada a pose atual.
+\end{comment}
 
 \begin{comment}
 \section{A FAZER}
