@@ -56,17 +56,6 @@ Em poucas palavras o algoritmo se resume a:
 	\item Avaliar o erro de cada pose calculada e escolher a que possuir o menor erro de reprojeção.
 \end{itemize}
 
-\section{Uso de GPU} % TODO
-
-% por que usar?
-%% o algoritmos é lento
-% dá pra usar?
-%% sim, porque chega uma hora que é cada um por si :) dá para colocar várias coisinhas em threads diferentes
-% por que GPU é bom? o que ela faz demais?
-%% muitos cores para realizar continhas
-% desvantagens?
-%% branch do código? ("if")
-
 \section{Extraindo a hipótese de aresta}
 
 Uma das primeiras etapas do algoritmo é o agrupamento das hipóteses de cada amostra em conjuntos cujos elementos formam uma reta (ou o mais próximo disso). Vale ressaltar que o processo de extração dessas hipóteses é pela amostragem de pontos, descrito em detalhes na seção \ref{sec:amostragem_de_pontos}.
@@ -125,6 +114,43 @@ Mesmo tendo calculado os pesos, é importante fazer uma escolha aleatória porqu
 % TODO algoritmo da escolha aleatoria com pesos
 
 Após isso é calculado o erro de reprojeção de cada pose formada. A que possuir menor erro é considerada a pose da cena atual e será usada para as próximas iterações do algoritmo.
+
+\section{Uso da GPU}
+
+Neste trabalho de graduação a técnica foi implementada tanto em C++ quanto em CUDA, plataforma de computação paralela criada pela NVIDIA que compila código para ser executado na GPU. A decisão de se implementar para essa plataforma foi feita após avaliar que o algoritmo era computacionalmente complexo, mas com cálculos bastante independentes, o que é um excelente caso para implementar um algoritmo que seja executado em paralelo. As placas atuais da NVIDIA possuem várias unidades de processamento que, apesar de serem individualmente mais lentas que uma CPU atual, tem a vantagem de se comunicar rapidamente entre seus outros \emph{cores}.
+
+As placas da NVIDIA que suportam CUDA agrupam suas unidades de processamento em blocos e cada bloco, por sua vez, possui várias \emph{threads} (veja a \figref{cuda_grid}). Diferentes \emph{threads} podem trocar mensagens entre si através da memória compartilhada, contanto que elas estejam no mesmo bloco. Se estiverem em blocos diferentes elas podem se comunicar através da memória global, porém esse tipo de comunicação é mais lento. Veja o diagrama da \figref{cuda_memory}.
+
+Na etapa de classificação do algoritmo apresentado, pode-se observar que cada aresta $E_i$ trabalha de forma independente umas das outras. Nenhum tipo de cálculo feito em uma aresta interfere no resultado de outra. Isso já é um bom indício que a clusterização utilizando o \emph{k-means} pode ser executados em diferentes \emph{threads}.
+
+\textbf{FAZER:}
+\begin{itemize}
+	\item falar que as amostras também podem ficar em threads separadas
+	\item o fitline também pode ser executado em threads separadas (ver como foi a logica que usei)
+	\item falar que há um limite de threads por bloco. por isso que não bota todas as arestas em um bloco só. tem que separar as arestas por bloco.
+	\item fitline teve que ser reimplementado em GPU. o código foi baseado no código do OpenCV, mas a licença deles permite.
+\end{itemize}
+
+\begin{figure}[t]
+\centering\includegraphics{monografia/cuda_grid}
+\caption{Esquema de separação de blocos e \emph{threads} das placas da NVIDIA}
+\label{cuda_grid}
+\end{figure}
+
+\begin{figure}[t]
+\centering\includegraphics{monografia/cuda_memory}
+\caption{Organização de memória das placas da NVIDIA}
+\label{cuda_memory}
+\end{figure}
+
+% por que usar?
+%% o algoritmos é lento
+% dá pra usar?
+%% sim, porque chega uma hora que é cada um por si :) dá para colocar várias coisinhas em threads diferentes
+% por que GPU é bom? o que ela faz demais?
+%% muitos cores para realizar continhas
+% desvantagens?
+%% branch do código? ("if")
 
 \begin{comment}
 \section{Rascunho}
