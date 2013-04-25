@@ -118,6 +118,7 @@ Independente das técnicas que serão apresentadas abaixo, o rastreamento basead
 
 Como descrito no \emph{pipeline} anterior, uma das etapas do rastreamento baseado em aresta é a extração das arestas do quadro atual, que é uma imagem 2D. Duas técnicas que valem a pena serem mencionadas são a extração explícita de aresta \cite{extracao_explicita} e a técnica da amostragem de pontos\cite{drummondecipolla}.
 
+\label{sec:extracao_explicita}
 Na primeira técnica são extraídos segmentos de reta da imagem utilizando algum algoritmo de detecção de linha, como a transformada de Hough, ao mesmo tempo em que o modelo é renderizado utilizando a pose do \emph{frame} anterior, como mostra a \figref{carro_extracao_explicita}. Um procedimento recursivo é então utilizado com a finalidade de encontrar as melhores correspondências entre as arestas do modelo 3D e os segmentos de reta 2D extraídos da imagem. Neste procedimento as arestas projetadas do modelo são agrupadas com os segmentos de reta extraídos de acordo com a menor distância de Mahalanobis.
 
 \begin{figure}[!t]

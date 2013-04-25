@@ -14,7 +14,7 @@ Um dos problemas que ocorrem nas técnicas \emph{edge-based} é que nem sempre s
 O trabalho com múltiplas hipóteses foi inicialmente proposto em \cite{multiplas_hipoteses}. Neste trabalho cada aresta $E_i$ (do modelo) projetada na imagem tem um conjunto $\{e_{i,j}\}$ de pontos amostrados. Cada ponto $e_{i,j}$ tem um conjunto $\{e'_{i,j,l}\}$ de hipóteses de correspondência. Em \cite{multiplas_hipoteses} a hipótese $e'_{i,j,l}$ é aquela que tem a menor distância da aresta projetada $E_i$. Então mesmo que sejam encontrados pontos de forte gradiente na normal da aresta $E_i$, aquele que mais se aproxima da aresta projetada é escolhido como correspondente a $e_{i,j}$. Tendo este conjunto de correspondências, o processo continua como no caso de hipótese única.
 \end{comment}
 
-Como foi visto anteriormente, a técnica de múltiplas hipóteses escolhe um dos candidatos para ser associado com a amostra do modelo sendo escolhido como correspondente o candidato que está mais próximo da amostra projetada. Entretanto isso nem sempre resulta na melhor pose final. Outros pontos de forte gradiente como objetos externos ou até uma outra aresta do próprio objeto podem confundir todo o cálculo da pose só porque estão mais próximos de uma determinada aresta do modelo, como mostra a \figref{multiplas_hipoteses_errada}. Uma forma de contornar essa situação seria também escolher outras hipóteses (não somente a mais próxima) e calcular novas poses. O trabalho proposto em \cite{celine} é exatamente calcular diversas poses para então escolher a melhor entre elas.
+Na técnica de múltiplas hipóteses um dos candidatos é escolhido para ser associado com a amostra do modelo, no caso, o candidato mais próximo da aresta projetada. Entretanto isso nem sempre resulta na melhor pose final, pois outros pontos de forte gradiente, como objetos externos ou até uma outra aresta do próprio objeto, podem confundir todo o cálculo da pose só porque estão mais próximos de uma determinada aresta do modelo. Isso pode ser visualizado na \figref{multiplas_hipoteses_errada}, em que além da aresta do objeto, o lápis também é identificado pelo algoritmo de busca. O fato de uma das arestas do modelo projetado estar mais perto do lápis do que do próprio objeto faz com que o algoritmo de rastreamento o utilize como aresta do objeto e faça o cálculo de pose a partir disso, o que vai fazer uma grande diferença no processo de rastreamento a partir de então. Uma forma de contornar essa situação seria também escolher outras hipóteses (não somente a mais próxima) e calcular novas poses a partir de diferentes agrupamentos amostra-hipótese. O trabalho \cite{celine} propõe exatamente isso: que sejam calculadas diversas poses, utilizando hipóteses diferentes, para que no final as poses calculas sejam comparadas e a melhor dentre elas seja escolhida.
 
 \begin{figure}[!ht]
 \centering\includegraphics{monografia/multiplas_hipoteses_errada}
@@ -22,13 +22,41 @@ Como foi visto anteriormente, a técnica de múltiplas hipóteses escolhe um dos
 \label{multiplas_hipoteses_errada}
 \end{figure}
 
-Combinar todos os possíveis casamentos amostra-hipótese não é uma estratégia válida, não só por questão de performance. Um outro problema dessa estratégia é que nem sempre um agrupamento de hipóteses revela uma possível aresta do objeto. Na \figref{agrupamento_errado_de_hipoteses} a escolha das hipóteses vermelhas claramente não resultaria em uma pose válida. Para resolver essa questão, as hipóteses poderiam ser escolhidas de forma que fossem o mais próximo possível de uma reta. Sendo assim, ao invés de combinar diferentes hipóteses de pontos amostrados uma boa estratégia é combinar diferentes hipóteses de aresta.
+Um dos principais passos do algoritmo visa fazer combinações de agrupamento amostra-hipótese, pois combinar todos os possíveis casamentos amostra-hipótese não é uma estratégia válida, já que isso pode significar o cálculo de milhares de poses por cada \emph{frame}, mesmo que o objeto rastreado seja simples, como um cubo. Um outro problema de se fazer todas as possíveis combinações é que nem sempre um agrupamento de hipóteses revela uma possível aresta do objeto. Na \figref{agrupamento_errado_de_hipoteses} temos as amostras (em vermelho) e suas respectivas hipóteses (quadrados). A \figref{agrupamento_errado_de_hipoteses} exemplifica um caso de um casamento qualquer de amostras e hipóteses em que as hipóteses escolhidas estão em verde. A escolha dessas hipóteses claramente não resultaria em uma pose válida, pois o sistema iria tentar convergir uma de suas arestas (a com amostras vermelhas) para os pontos marcados em verde, e isso estaria longe de uma pose válida. Como o algoritmo trabalha com múltiplas hipóteses de pose, a pose gerada pela \figref{agrupamento_errado_de_hipoteses} provavelmente seria descartada em um passo posterior, mas é melhor evitar esse tipo de agrupamento para que sejam feitos menos cálculos de pose desnecessários. \cite{celine} sugere que se façam agrupamentos que sejam o mais próximo possível de uma reta, como exemplificado na \figref{agrupamento_certo_de_hipoteses}. Seguindo essa estratégia pode-se dizer que a abordagem trabalha não com múltiplas hipóteses de pontos do objeto, mas com múltiplas hipóteses de aresta. Veja a \figref{hipoteses_de_aresta}.
 
 \begin{figure}[!ht]
 \centering\includegraphics{monografia/agrupamento_errado_de_hipoteses}
 \caption{Hipóteses agrupadas sem formar uma linha. Os pontos vermelhos são as amostras do modelo; os quadrados são as hipóteses de cada amostras; os quadrados de cor verde são as hipóteses escolhidas.}
 \label{agrupamento_errado_de_hipoteses}
 \end{figure}
+
+\begin{figure}[!ht]
+\centering\includegraphics{monografia/agrupamento_certo_de_hipoteses}
+\caption{A figura mostra dois tipos agrupamentos (um rosa e outro verde) de modo que se aproximem de uma linha. Esse tipo de agrupamento é mais próximo de uma aresta que o mostrado na \figref{agrupamento_errado_de_hipoteses}}
+\label{agrupamento_certo_de_hipoteses}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering\includegraphics{monografia/hipoteses_de_aresta}
+\caption{A figura mostra dois tipos de agrupamento (um rosa e outro verde) formando duas hipóteses de aresta de mesma cor.}
+\label{hipoteses_de_aresta}
+\end{figure}
+
+O uso de múltiplas hipóteses de aresta simplifica o trabalho de agrupar múltiplas hipóteses para se calcular novas poses. No caso, basta selecionar uma hipótese de aresta para cada aresta visível do modelo que já é possível calcular uma nova pose que projeta o modelo o mais próximo possível das arestas escolhidas.
+
+% TODO: cálculo do erro
+
+Em poucas palavras o algoritmo se resume a:
+
+\begin{itemize}
+	\item Projetar o modelo usando a pose do quadro anterior;
+	\item Amostrar as arestas do modelo projetado;
+	\item Fazer uma busca por pontos de forte gradiente na normal de cada amostra. Esses pontos serão as hipóteses da amostra;
+	\item Em cada aresta, criar grupos de hipóteses de modo que não existam duas hipóteses em um mesmo grupo que pertençam à mesma amostra. Esses grupos devem aproximar, da melhor forma possível, seus elementos de uma reta;
+	\item Para cada aresta visível do modelo, escolher uma de suas hipóteses de aresta e calcular a pose que projeta o modelo o mais próximo possível das arestas selecionadas. Observe que a escolha das hipóteses de aresta seguido do cálculo da pose se assemelha bastante à técnica de extração explícita de aresta, visto na seção \ref{sec:extracao_explicita};
+	\item Repetir o passo anterior tantas vezes quanto forem a quantidade de poses necessárias;
+	\item Avaliar o erro de cada pose calculada e escolher a que possuir o menor erro de reprojeção.
+\end{itemize}
 
 \section{Extraindo a hipótese de aresta}
 
