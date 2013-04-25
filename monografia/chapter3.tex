@@ -42,9 +42,7 @@ Um dos principais passos do algoritmo visa fazer combinações de agrupamento am
 \label{hipoteses_de_aresta}
 \end{figure}
 
-O uso de múltiplas hipóteses de aresta simplifica o trabalho de agrupar múltiplas hipóteses para se calcular novas poses. No caso, basta selecionar uma hipótese de aresta para cada aresta visível do modelo que já é possível calcular uma nova pose que projeta o modelo o mais próximo possível das arestas escolhidas.
-
-% TODO: cálculo do erro
+O uso de múltiplas hipóteses de aresta simplifica a escolha de hipóteses para se calcular novas poses. No caso, basta selecionar uma hipótese de aresta para cada aresta visível do modelo, que já é possível calcular uma nova pose. O critério para escolha da hipótese de aresta será discutido em breve, mas é importante ressaltar que apesar de todos os passos feitos até então, não se sabe com clareza quais das múltiplas hipóteses de aresta são arestas do objeto. É por isso que são feitas diferentes combinações dessas hipóteses para que diferentes poses sejam calculadas. O número de vezes em que hipóteses de arestas são escolhidas e novas poses são calculadas depende da quantidade de poses que se deseja obter. Depois de um número arbitrário de poses terem sido calculadas, o último passo é escolher uma pose dentre todas as poses calculadas. Cada pose possui um erro de reprojeção e o valor desse erro é o que vai ser usado para escolher a melhor pose.
 
 Em poucas palavras o algoritmo se resume a:
 
