@@ -56,9 +56,22 @@ Em poucas palavras o algoritmo se resume a:
 	\item Avaliar o erro de cada pose calculada e escolher a que possuir o menor erro de reprojeção.
 \end{itemize}
 
+\section{Uso de GPU} % TODO
+
+% por que usar?
+%% o algoritmos é lento
+% dá pra usar?
+%% sim, porque chega uma hora que é cada um por si :) dá para colocar várias coisinhas em threads diferentes
+% por que GPU é bom? o que ela faz demais?
+%% muitos cores para realizar continhas
+% desvantagens?
+%% branch do código? ("if")
+
 \section{Extraindo a hipótese de aresta}
 
-As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$ (uma das hipóteses da amostra $e_{i,j}$, como mostra a \figref{multiplas_hipoteses_celine}) e extraindo a reta que mais se aproxima desse conjunto de pontos. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
+Uma das primeiras etapas do algoritmo é o agrupamento das hipóteses de cada amostra em conjuntos cujos elementos formam uma reta (ou o mais próximo disso). Vale ressaltar que o processo de extração dessas hipóteses é pela amostragem de pontos, descrito em detalhes na seção \ref{sec:amostragem_de_pontos}.
+
+As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$. Cada aresta $E_i$ do modelo possui um conjunto $\{e_{i,j}\}$ de amostras (veja a seção \ref{sec:amostragem_de_pontos}) e cada uma dessas amostras está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, como mostra a \figref{multiplas_hipoteses_celine}. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=0.9\textwidth]{monografia/multiplas_hipoteses_celine}
@@ -66,27 +79,35 @@ As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$ 
 \label{multiplas_hipoteses_celine}
 \end{figure}
 
-Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada aresta são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que será chamada de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
+O agrupamento dessas hipóteses é feito utilizando o algoritmo de classificação \emph{k-means}. A classificação tem a tarefa de decidir a que grupo cada hipótese vai pertencer. Como o objetivo é que o conjunto de pontos de cada grupo (ou classe) sejam o mais colineares possíveis, esta etapa deve alocar as hipóteses para cada grupo de forma que cada novo elemento adicionado contribua com a colinearidade do grupo. Seja $\{e'_{i,j,l}\}$ o conjunto de elementos da aresta $E_i$, o objetivo é distribui-los entre as $k_i$ classes de $E_i$, definidas por $(c^i_1, \dots, c^i_{k_i})$.
 
-Inicialmente as hipóteses $e'_{i,j,l}$ da aresta $E_i$ são agrupadas nas classes $(c^i_1, \dots, c^i_{k_i})$ na ordem em que elas foram encontradas na busca pela normal. Dessa forma a classe $c^i_m$ é formada inicialmente pelo conjunto $\{e'_{i,j,m}\}$, em que $0 < j \leq n_i$ e $n_i$ é o número de amostras da aresta $E_i$. Esse é um bom agrupamento inicial, já que boa parte das amostras já estão localizadas no seu \emph{cluster} final. Em seguida são calculadas as distâncias de cada hipótese $e'_{i,j,l}$ da amostra $e_{i,j}$ para cada um dos centróides $(c^i_1, \dots, c^i_{k_i})$. Esse cálculo de distâncias serve para realocar as hipóteses para os \emph{clusters} mais próximos.
+% TODO: aqui já se sabe que cada aresta trabalha de forma independente. thread nelas!
 
-No trabalho original \cite{celine} é dito que esse último passo seja repetido até que não haja mais trocas entre os \emph{clusters}, mas na prática precisou-se estabelecer um número máximo de iterações, pois muitas vezes o algoritmo repetia indefinidamente.
+%Para formar esses conjuntos, as hipóteses $e'_{i,j,l}$ de cada amostra são agrupadas utilizando um algoritmo de classificação \emph{k-means}. Para cada aresta $E_i$, o algoritmo agrupa as hipóteses de pontos $e'_{i,j,l}$ em $k_i$ conjuntos (ou classes), que será chamada de $(c^i_1, \dots, c^i_{k_i})$. O centróide de cada classe é a reta resultante do algoritmo \emph{fitline} \cite{fitline_doc} com o conjunto de pontos da classe.
+
+Inicialmente as hipóteses $e'_{i,j,l}$ da aresta $E_i$ são agrupadas nas classes $(c^i_1, \dots, c^i_{k_i})$ na ordem em que elas foram encontradas na busca pela normal. Dessa forma a classe $c^i_m$ é formada inicialmente pelo conjunto $\{e'_{i,j,m}\}$, em que $0 < j \leq n_i$ e $n_i$ é o número de amostras da aresta $E_i$. Em outras palavra, as hipóteses mais próximas das amostras serão colocadas nas primeiras classes. Esse é um bom agrupamento inicial, já que boa parte das amostras já estão localizadas no seu \emph{cluster} final.
+
+Em seguida ocorre o procedimento iterativo de reagrupar as hipóteses. Nessa etapa, o primeiro passo é computar o centróide de cada classe. O centróide é uma reta do espaço cuja soma das distâncias de cada elemento da classe para a reta é a menor possível. A estimativa dessa reta é calculada através de um procedimento denominado \emph{fitline} \cite{fitline_doc}. O que ele faz basicamente é encontrar uma reta que minimiza o erro (definido pela soma das distâncias de cada elemento da classe à reta) de cada \emph{cluster}.
+
+Para cada amostra $e_{i,j}$ é executado outro procedimento iterativo que reagrupa as hipóteses nos \emph{clusters}. Nessa etapa é calculada a distância das hipóteses $\{e'_{i,j,l}\}$ da amostra $e_{i,j}$ para todos os centróides. Isso é feito para que a hipótese seja movida para o \emph{cluster} cujo centróide seja o mais próximo. Porém pode acontecer de mais de uma hipótese da mesma amostra ter o mesmo \emph{cluster} como o mais próximo, mas infelizmente somente uma delas pode ir para o \emph{cluster}, pois como foi visto, não podem existir duas hipóteses de uma mesma amostra em uma mesma classe. A solução para isso foi definir que o primeira hipótese teria prioridade sobre as hipóteses seguintes, ou seja, quando uma hipótese tiver sido movida para uma classe, nenhuma das outras hipóteses seguintes que serão avaliadas poderão optar pela mesma classe. Quando ocorrer da hipótese optar por uma classe que já tiver sido ocupada, ela será movida para o segundo \emph{cluster} mais próximo. Devido a isso, ao invés do cálculo das distâncias guardar apenas o centróide mais próximo da hipótese, nessa etapa cada hipótese mantém uma lista com os centróides ordenados por ordem de distância. Assim fica mais fácil de saber qual o segundo (ou terceiro) centróide mais próximo quando se tenta alocar a hipótese a um \emph{cluster} já ocupado.
+
+% TODO: fazer algoritmo, pseudocodigo
+
+No trabalho original \cite{celine} é dito que esse último passo seja repetido até que não haja mais trocas entre as classes, mas na prática precisou-se estabelecer um número máximo de iterações, pois muitas vezes o algoritmo repetia indefinidamente.
 
 % TODO: Esses passos são melhor explicados no algoritmo abaixo.
 
-Ao final das iterações a aresta $E_i$ possui um conjunto de \emph{clusters} $c^i_m = (\{e'_{i,j,m}\}, r^i_m)$, sendo que $r^i_m$ é descrito na equação.
+Ao final das iterações é computado o erro residual $r^i_m$, de cada classe $c^i_m$. O erro residual é calculado pela média das distâncias de cada elemento da classe para o seu centróide. Ele indica o quão próximo de uma reta o conjunto de elementos da classe está, como mostra a equação
 
 \begin{equation}
-r^i_m = \frac{1}{N} \sum^{N}_{j = 0} \Delta (e'_{i,j,m}, c^i_m)
+r^i_m = \frac{1}{N} \sum^{N}_{j = 0} \text{dist} (e'_{i,j,m}, c^i_m)
 \end{equation}
 
-em que $N$ é o número de elementos do \emph{cluster} $c^i_m$, e $\Delta (e', c)$ é a função que calcula a distância do ponto $e'$ à reta $c$. O resíduo $r^i_m$ será usado para a próxima seção.
+em que $N$ é o número de elementos do \emph{cluster} $c^i_m$, e $\text{dist} (e', c)$ é a função que calcula a distância do ponto $e'$ à reta $c$. O resíduo $r^i_m$ será usado na próxima seção e influenciará na escolha das hipóteses de aresta.
 
 \section{Obtendo as hipóteses de pose}
 
-Após extrair as hipóteses de aresta, as hipóteses de pose são obtidas ao se escolher, para cada aresta $E_i$, uma classe $c^i_{p_i}$. A escolha é feita de forma aleatória, mas considerando o peso $w^i_m$ de cada hipótese de aresta.
-
-O peso $w^i_m$ é deduzido pela equação:
+As hipóteses de pose são calculadas a partir de um conjunto de hipóteses de aresta selecionadas. Nesse ponto não é fácil avaliar quais das hipóteses de aresta são as mais corretas, por isso que elas são combinadas de formas diferentes de modo que sejam calculadas várias poses. Portanto é razoável que em cada combinação as hipóteses de aresta sejam escolhidas aleatoriamente. Entretanto cada hipótese tem um erro residual $r^i_m$ associado, e apesar desse erro não indicar necessariamente que uma determinada hipótese é uma boa escolha, ele pode pelo menos ajudar na escolha da aresta. É por isso que apesar da escolha ser aleatória, cada hipótese de aresta $c^i_m$ tem um peso $w^i_m$ que o ajuda a ser sorteado. O peso $w^i_m$ é dado pela equação \cite{celine}
 
 \begin{equation}
 w^i_m = \begin{cases}
@@ -97,7 +118,11 @@ w^i_m = \begin{cases}
 
 em que $\lambda$ é um parâmetro que pode ser ajustado.
 
-Faz-se uma escolha aleatória com pesos para que todas as hipóteses de aresta tenham chance de serem escolhidas para formar uma pose, embora as arestas de maior peso tenham mais chances de serem escolhidas.
+Mesmo tendo calculado os pesos, é importante fazer uma escolha aleatória porque pode ser que alguma hipótese, mesmo tendo o menor peso, seja a melhor escolha para a pose do quadro atual. Por outro lado vale a pena se utilizar dos pesos (e não somente escolher uma hipótese ao acaso) porque o fato de um \emph{cluster} ser formado por pontos que se aproximam bastante de uma reta já dá um indício (menos não sendo tão forte) que determinada hipótese pode ser uma boa escolha.
+
+% TODO A escolha aleatória com pesos é equivalente a girar uma roleta em que determinadas casas são maiores que outras (como mostra a \figref{random_weighted_choice}). O algoritmo usado pode ser visto no pseudocódigo abaixo.
+
+% TODO algoritmo da escolha aleatoria com pesos
 
 Após isso é calculado o erro de reprojeção de cada pose formada. A que possuir menor erro é considerada a pose da cena atual e será usada para as próximas iterações do algoritmo.
 
