@@ -60,12 +60,12 @@ Em poucas palavras o algoritmo se resume a:
 
 Uma das primeiras etapas do algoritmo é o agrupamento das hipóteses de cada amostra em conjuntos cujos elementos formam uma reta (ou o mais próximo disso). Vale ressaltar que o processo de extração dessas hipóteses é pela amostragem de pontos, descrita na seção \ref{sec:amostragem_de_pontos}.
 
-As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$. Cada aresta $E_i$ do modelo possui um conjunto $\{e_{i,j}\}$ de amostras (veja a seção \ref{sec:amostragem_de_pontos}) e cada uma dessas amostras está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, como mostra a \figref{multiplas_hipoteses_celine}. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
+As hipóteses de aresta são formadas agrupando $k_i$ conjuntos de $e'_{i,j,l}$. Cada aresta $E_i$ do modelo possui um conjunto $\{e_{i,j}\}$ de amostras (veja a seção \ref{sec:amostragem_de_pontos}) e cada uma dessas amostras está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, como mostra a \figref{multiple_hipotheses_diagram}. O número $k_i$ de conjuntos é dado pelo maior número de hipóteses detectadas por uma amostra da aresta $E_i$, ou seja $k_i = max_j\{n_{i,j}\}$, sendo $n_{i,j}$ o número de candidatos associados à amostra $e_{i,j}$.
 
 \begin{figure}[!ht]
-\centering\includegraphics[width=0.9\textwidth]{monografia/multiplas_hipoteses_celine}
-\caption{Visualização das múltiplas hipóteses. Figura retirada de \cite{celine}.}
-\label{multiplas_hipoteses_celine}
+\centering\includegraphics[width=\textwidth]{monografia/multiple_hipotheses_diagram}
+\caption{Diagrama de múltiplas hipóteses. A aresta $E_0$ possui $n_0$ amostras e contém $k_0$ \emph{clusters} $c^0_i$.}
+\label{multiple_hipotheses_diagram}
 \end{figure}
 
 O agrupamento dessas hipóteses é feito utilizando o algoritmo de classificação \emph{k-means} \cite{kmeans}. A classificação tem a tarefa de decidir a que grupo cada hipótese vai pertencer. Como o objetivo é que o conjunto de pontos de cada grupo (ou classe) sejam o mais colineares possíveis, esta etapa deve alocar as hipóteses para cada grupo de forma que cada novo elemento adicionado contribua com a colinearidade do grupo. Seja $\{e'_{i,j,l}\}$ o conjunto de elementos da aresta $E_i$, o objetivo é distribui-los entre as $k_i$ classes de $E_i$, definidas por $(c^i_1, \dots, c^i_{k_i})$.
