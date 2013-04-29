@@ -92,6 +92,7 @@ Ao final das iterações é computado o erro residual $r^i_m$, de cada classe $c
 r^i_m = \frac{1}{N} \sum^{N}_{j = 0} \text{dist} (e'_{i,j,m}, c^i_m)
 \end{equation}
 
+\noindent
 em que $N$ é o número de elementos do \emph{cluster} $c^i_m$, e $\text{dist} (e', c)$ é a função que calcula a distância do ponto $e'$ à reta $c$. O resíduo $r^i_m$ será usado na próxima seção e influenciará na escolha das hipóteses de aresta.
 
 \section{Obtendo as hipóteses de pose}
@@ -105,6 +106,7 @@ w^i_m = \begin{cases}
 \end{cases}
 \end{equation}
 
+\noindent
 em que $\lambda$ é um parâmetro que pode ser ajustado.
 
 Mesmo tendo calculado os pesos, é importante fazer uma escolha aleatória porque pode ser que alguma hipótese, mesmo tendo o menor peso, seja a melhor escolha para a pose do quadro atual. Por outro lado vale a pena se utilizar dos pesos (e não somente escolher uma hipótese ao acaso) porque o fato de um \emph{cluster} ser formado por pontos que se aproximam bastante de uma reta já dá um indício (menos não sendo tão forte) que determinada hipótese pode ser uma boa escolha.
