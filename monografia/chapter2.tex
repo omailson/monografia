@@ -24,7 +24,7 @@ Em \eqref{matrix_p}, $K$ representa os parâmetros intrínsecos da câmera. Esse
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=5in]{monografia/projection_scheme.png}
-\caption{Esquema de projeção em perspectiva. Observe na imagem que $(\mathbf{O}, \vec{i}, \vec{j}, \vec{k})$ é o sistema de coordenadas do mundo, $(\mathbf{C}, \vec{i_c}, \vec{j_c}, \vec{k_c})$ é o sistema de coordenadas da câmera, $\mathbf{M}$ é um ponto 3D e $\mathbf{m}$ é sua projeção 2D no plano. Retirado de \cite{lepetit}.}
+\caption{Esquema de projeção em perspectiva. Observe na imagem que $(\mathbf{O}, \vec{i}, \vec{j}, \vec{k})$ é o sistema de coordenadas do mundo, $(\mathbf{C}, \vec{i_c}, \vec{j_c}, \vec{k_c})$ é o sistema de coordenadas da câmera, $\mathbf{M}$ é um ponto 3D e $\mathbf{m}$ é sua projeção 2D no plano. Imagem retirada de \cite{lepetit}.}
 \label{projection_scheme}
 \end{figure}
 
@@ -53,12 +53,12 @@ Como foi dito anteriormente, existe na literatura vários tipos de informações
 
 \begin{figure}[!ht]
 	\centerline{
-		\subfloat[Exemplo de marcador externo]{
+		\subfloat[Exemplo de marcador externo.]{
 			\includegraphics[width=0.25\textwidth]{monografia/pattSample1}
 			\label{marcador_modelo}
 		}
 		\hfil
-		\subfloat[Exemplo de marcador extraído de uma imagem]{
+		\subfloat[Exemplo de marcador extraído de uma imagem.]{
 			\begin{tikzpicture}
 				\pgftext[at=\pgfpointorigin]{
 					\pgflowlevel{\pgftransformcm{1}{0.7}{0}{1}{\pgfpoint{0}{0}}}
@@ -70,7 +70,7 @@ Como foi dito anteriormente, existe na literatura vários tipos de informações
 			\label{marcador_extraido}
 		}
 	}
-	\caption{Exemplo de marcador e sua projeção}
+	\caption{Exemplo de marcador e sua projeção.}
 \end{figure}
 
 O uso de marcadores, no entanto, requer que uma interferência no ambiente seja feita e, apesar de simplificar o rastreamento 3D, nem sempre é usado. Isto acontece porque podem existir limitações técnicas que impeçam a introdução prévia de elementos auxiliares ou pode até existir limitações baseadas na decisão do usuário final. Neste caso deve-se buscar \emph{features} que estejam naturalmente na cena, o que muitas vezes é parte do próprio objeto a ser rastreado. Abrir mão de marcadores externos torna o rastreamento muito mais desafiador, e a discussão dessas técnicas será o foco do resto do trabalho.
@@ -103,7 +103,7 @@ A escolha entra textura ou arestas do modelo depende do objeto a ser rastreado. 
 			\label{textura_aresta_aresta}
 		}
 	}
-	\caption{Dois tipos de objetos: um com textura e outro com arestas bem definidas}
+	\caption{Dois tipos de objetos: um com textura e outro com arestas bem definidas.}
 \end{figure}
 
 \subsection{Técnicas de rastreamento baseado em arestas}
@@ -166,20 +166,20 @@ Neste caso é preciso escolher com qual dos pontos achados será feito o casamen
 
 \begin{figure}[!ht]
 	\centerline{
-		\subfloat[Experimento com hipótese única. Observe que os pontos do controle remoto (de maior contraste) confundem o rastreamento]{
+		\subfloat[Experimento com hipótese única. Observe que os pontos do controle remoto (de maior contraste) confundem o rastreamento.]{
 			\includegraphics[width=0.5\textwidth]{monografia/sem_multiplas_hipoteses}
 			\label{sem_multiplas_hipoteses}
 		}
 		\hfil
-		\subfloat[Experimento com múltiplas hipóteses]{
+		\subfloat[Experimento com múltiplas hipóteses.]{
 			\includegraphics[width=0.5\textwidth]{monografia/com_multiplas_hipoteses}
 			\label{com_multiplas_hipoteses}
 		}
 	}
-	\caption{Resultado de um rastreamento com múltiplas hipóteses e com hipótese única}
+	\caption{Resultado de um rastreamento com múltiplas hipóteses e com hipótese única.}
 \end{figure}
 
-Para este tipo de problema uma boa solução é o uso de múltiplas hipóteses da amostra \cite{multiplas_hipoteses}. Ou seja, cada amostra $e_{i,j}$ está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, e somente as correspondências mais prováveis seriam usadas no processo de minimização.
+Para este tipo de problema uma boa solução é o uso de múltiplas hipóteses da amostra \cite{multiplas_hipoteses}. Ou seja, cada amostra $e_{i,j}$ está associada a um conjunto de hipóteses $\{e'_{i,j,l}\}$, e somente as correspondências mais prováveis seriam usadas no processo de minimização. Na prática essa técnica é menos vulnerável a mudanças no ambiente. Na \figref{com_multiplas_hipoteses} é mostrado o resultado de uma técnica de rastreamento com múltiplas hipóteses de amostra. Observe que mesmo aproximando um objeto com forte gradiente, o rastreamento sofre pouca distorção.
 
 Para fins práticos as hipóteses mais prováveis são aquelas que mais se aproximam da amostra projetada. Utilizando estas informações e a equação \eqref{calculo_pose_amostragem} pode-se chegar à seguinte fórmula de cálculo de pose:
 
@@ -219,7 +219,7 @@ A extração explícita das arestas tem a vantagem de ser mais robusta, porém �
 \begin{figure}[ht!]
 \centering
 \includegraphics{monografia/occlusion.png}
-\caption{Objeto com oclusão parcial das arestas. Imagem retirada de \cite{wuest}}
+\caption{Objeto com oclusão parcial das arestas. Imagem retirada de \cite{wuest}.}
 \label{occlusion}
 \end{figure}
 
