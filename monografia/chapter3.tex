@@ -123,15 +123,13 @@ Neste trabalho de graduação a técnica foi implementada tanto em C++ quanto em
 
 As placas da NVIDIA que suportam CUDA agrupam suas unidades de processamento em blocos e cada bloco, por sua vez, possui várias \emph{threads} (veja a \figref{cuda_grid}). Diferentes \emph{threads} podem trocar mensagens entre si através da memória compartilhada, contanto que elas estejam no mesmo bloco. Se estiverem em blocos diferentes elas podem se comunicar através da memória global, porém esse tipo de comunicação é mais lento. Veja o diagrama da \figref{cuda_memory}.
 
+\subsection{Implementação em GPU}
+
 Na etapa de classificação do algoritmo apresentado, pode-se observar que cada aresta $E_i$ trabalha de forma independente das demais. Nenhum tipo de cálculo feito em uma aresta interfere no resultado de outra. Isso já é um bom indício que a clusterização utilizando o \emph{k-means} pode ser executada em diferentes \emph{threads}.
 
-\textbf{FAZER:}
-\begin{itemize}
-	\item falar que as amostras também podem ficar em threads separadas
-	\item o fitline também pode ser executado em threads separadas (ver como foi a logica que usei)
-	\item falar que há um limite de threads por bloco. por isso que não bota todas as arestas em um bloco só. tem que separar as arestas por bloco.
-	\item fitline teve que ser reimplementado em GPU. o código foi baseado no código do OpenCV, mas a licença deles permite.
-\end{itemize}
+Cada aresta executa de forma independente a clusterização \emph{k-means}, que ocorre em duas etapas. A primeira é o cálculo do centróide, em que um elemento de cada amostra é utilizado para encontrar a reta que mais se aproxima delas. Depois é feita a realocação das hipóteses de acordo com sua distância para os centróides. Nessa segunda etapa de ordenação cada amostra pode trabalhar de forma independente. Basta que seja conhecido todos os centróides calculados. Por isso é possível separar cada cálculo de realocação das amostras (que envolve cálculo de distâncias e ordenação) em \emph{threads} separadas, assim como foi feito com as arestas. Com a única condição que a informação dos centróides fique em algum tipo de memória compartilhada entre as amostras da arestas.
+
+Devido a essa limitação de toda amostra utilizar informações em comum com as outras amostras da aresta, é importante que as \emph{threads} que computam as amostras de uma mesma aresta sejam do mesmo bloco da GPU. Dessa forma pode-se utilizar a \emph{shared memory}, a qual compartilha acesso com todas as \emph{threads} e possui um tempo de acesso mais rápido que a memória global, que compartilha acesso com as \emph{threads} de qualquer bloco. O cálculo dos centróides também pode ser paralelizado na GPU, já que cada centróide utiliza informações de apenas um \emph{cluster} para minimizar a reta.
 
 \begin{figure}[t]
 \centering\includegraphics{monografia/cuda_grid}
