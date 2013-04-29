@@ -37,3 +37,15 @@ Foi notado nos experimentos que o algoritmo não apresenta melhora significativa
 \caption{Gráfico comparativo de qualidade em um teste em que são feitos vários movimentos com a câmera}
 \label{qualidade_celine_boa}
 \end{figure}
+
+\section{Desempenho}
+
+No teste de desempenho é avaliado o tempo, em milésimos de segundo, o qual o algoritmo foi executado. Esse tipo de teste depende bastante da máquina utilizada, mas é importante discuti-lo para se fazer uma comparação relativa entre as técnicas apresentadas. O vídeo de entrada utilizado nos três testes é uma sequência de pouco mais de 700 \emph{frames} de um cubo parado enquanto que a câmera faz alguns movimentos. Foi feito o teste utilizando os algoritmos de múltiplas poses de câmera rodando tanto em GPU quanto em CPU, como também foi utilizado um algoritmo hipótese única de câmera para efeitos de comparação. A \figref{performance} mostra um gráfico comparativo de performance das três simulações. O eixo horizontal mostra os \emph{frames} do vídeo e o eixo vertical mostra o tempo de execução de cada \emph{frame}. Como é um teste de tempo, quanto menor o valor, melhor o resultado. Deseja-se executar o algoritmo em um tempo menor que 33 milésimos de segundo, por cada \emph{frame}, para que a execução seja considerada em tempo real.
+
+\begin{figure}[!ht]
+\centering\includegraphics[width=\textwidth]{monografia/performance}
+\caption{Gráfico comparativo da performance do algoritmo em CPU e em GPU. Também é mostrado um rastreamento sem utilizar o algoritmo para efeitos de comparação.}
+\label{performance}
+\end{figure}
+
+A \figref{performance} mostra que o uso de múltiplas hipóteses de pose juntamente com a clusterização \emph{k-means} aumenta bastante o tempo de execução do algoritmo. Apesar disso, o mesmo algoritmo implementado em CUDA apresenta resultados melhores do que a implementação em CPU da técnica de pose única.
