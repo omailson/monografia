@@ -29,7 +29,7 @@ Em \eqref{matrix_p}, $K$ representa os parâmetros intrínsecos da câmera. Esse
 
 Ainda na equação \eqref{matrix_p}, $[R | t]$ é uma matriz $3 \times 4$ e representa os parâmetros extrínsecos da câmera. Diferente dos parâmetros intrínsecos, os extrínsecos mudam no decorrer do rastreamento.
 
-Ao observar a equação \eqref{projection_eq} pode-se dizer que tendo um ponto 2D $\tilde{m}$ da imagem e um fator de escala $s$ (que também é conhecido), para que o ponto $\tilde{M}$ seja projetado em $\tilde{m}$ é necessário descobrir a matriz $P$ da câmera que realize essa operação, ou seja, um $P$ que torne $P\tilde{M_i} \equiv \tilde{m_i}$ válido para todo $i$. Como foi visto em \eqref{matrix_p}, $K$ é um parâmetro conhecido da câmera, então o que queremos descobrir, na verdade, é a matriz $[R | t]$, que a partir deste momento do texto iremos chamar de pose da câmera.
+Ao observar a equação \eqref{projection_eq} pode-se dizer que tendo um ponto 2D $\tilde{m}$ da imagem, para que o ponto $\tilde{M}$ seja projetado em $\tilde{m}$ é necessário descobrir a matriz $P$ da câmera que realize essa operação, ou seja, um $P$ que torne $P\tilde{M_i} \equiv \tilde{m_i}$ válido para todo $i$. Como foi visto em \eqref{matrix_p}, $K$ é um parâmetro conhecido da câmera, então o que queremos descobrir, na verdade, é a matriz $[R | t]$, que a partir deste momento do texto iremos chamar de pose da câmera.
 
 \subsection{Cálculo da pose}
 
@@ -78,7 +78,7 @@ Existem várias formas de rastrear um objeto na cena sem a utilização de marca
 
 O rastreamento baseado em modelo é caracterizado pelo uso de um modelo 3D pré-definido do objeto a ser rastreado. O modelo serve para saber as características do objeto que serão usadas para rastrear. Já na técnica baseada em \emph{SfM} \cite{lima2010model} não é necessário um conhecimento prévio da cena e, por isso, é bastante útil quando o ambiente a ser rastreado é desconhecido.
 
-Ao se comparar as duas abordagens pode-se dizer que a baseada em modelos é computacionalmente mais eficiente que a \emph{SfM} \cite{drummondecipolla}. A \emph{SfM} baseia-se na análise de todo o \emph{frame} da sequência de vídeo para poder identificar um movimento na câmera, e sabendo-se que poucos segundos de um vídeo podem conter bastante informação, essa análise pode se mostrar lenta computacionalmente. A técnica baseada em modelos, por sua vez, pode tirar proveito de um modelo já conhecido do objeto a ser rastreado. Com isso apenas características chaves precisam ser analisadas para o rastreamento. Neste trabalho de graduação a técnica baseada em modelos é explorada.
+Ao se comparar as duas abordagens pode-se dizer que a baseada em modelos é computacionalmente mais eficiente que a \emph{SfM} \cite{drummondecipolla}. A \emph{SfM} baseia-se na análise de todo o \emph{frame} da sequência de vídeo para poder identificar um movimento na câmera, e sabendo-se que poucos segundos de um vídeo podem conter bastante informação, essa análise pode se mostrar lenta computacionalmente. A técnica baseada em modelos, por sua vez, pode tirar proveito de um modelo já conhecido do objeto a ser rastreado. Com isso apenas características-chave precisam ser analisadas para o rastreamento. Neste trabalho de graduação a técnica baseada em modelos é explorada.
 
 \subsection{Rastreamento sem marcadores baseado em modelo}
 
@@ -131,7 +131,7 @@ Na primeira técnica são extraídos segmentos de reta da imagem utilizando algu
 
 A técnica de amostragem de pontos \cite{drummondecipolla} apresenta outra maneira de fazer o casamento entre as arestas do modelo e as arestas do objeto. Neste caso as arestas da imagem não são extraídas explicitamente para depois serem comparadas com as arestas projetadas no modelo, como na abordagem anterior.
 
-Cada aresta do modelo, que será chamada de $E_i$, é dividida de modo que se obtenha $n_i$ pontos amostrados, sendo $\{e_{i,j}\}$ o conjunto dessas amostras de $E_i$. A técnica de amostragem de pontos associa pontos do modelo 3D com pontos 2D extraídos da imagem. A extração desses pontos é feita a partir de uma busca de pontos de forte gradiente, chamados de $e'_{i,j}$, na normal de cada amostra $e_{i,j}$, como pode ser visto na \figref{amostragem_de_pontos}.
+Cada aresta do modelo, que será chamada de $E_i$, é dividida de modo que se obtenham $n_i$ pontos amostrados, sendo $\{e_{i,j}\}$ o conjunto dessas amostras de $E_i$. A técnica de amostragem de pontos associa pontos do modelo 3D com pontos 2D extraídos da imagem. A extração desses pontos é feita a partir de uma busca de pontos de forte gradiente, chamados de $e'_{i,j}$, na normal de cada amostra $e_{i,j}$, como pode ser visto na \figref{amostragem_de_pontos}.
 
 \begin{figure}[!ht]
 \centering\includegraphics{monografia/sample_point_diagram}
@@ -148,6 +148,13 @@ Tendo em vista esse casamento de amostras do modelo com amostras do objeto, o ob
 
 É importante lembrar que somente as arestas visíveis do modelo são usadas, porém pode existir o caso em que a aresta esteja parcialmente visível, e uma das vantagens desta abordagem é poder lidar com esse caso, como mostra a \figref{occlusion}.
 
+\begin{figure}[ht!]
+\centering
+\includegraphics{monografia/occlusion.png}
+\caption{Objeto com oclusão parcial das arestas. Imagem retirada de \cite{wuest}.}
+\label{occlusion}
+\end{figure}
+
 Outra vantagem é que a busca por pontos de forte gradiente na imagem é bastante simplificada. Ela acontece apenas em uma dimensão e somente nas normais das amostra do modelo o que torna a execução do algoritmo bastante rápida.
 
 \subsection{Múltiplas hipóteses}
@@ -157,7 +164,7 @@ Um dos problemas que ocorrem nas técnicas baseadas em arestas é que nem sempre
 \begin{figure}[ht!]
 \centering
 \includegraphics{monografia/cubo_exemplo}
-\caption{O cubo azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Nota-se que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.}
+\caption{O aramado azul representa o modelo da pose anterior; a imagem do cubo é a cena atual da qual pretende-se extrair a pose; os pontos vermelhos são as amostras do modelo; e os pontos em formato de X são as correspondências encontradas na cena atual. Nota-se que devido a ruídos na imagem algumas amostras possuem mais de uma correspondente.}
 \label{cubo_0}
 \end{figure}
 
@@ -215,13 +222,6 @@ Em outras palavras o casamento das amostras do modelo com os pontos extraídos d
 
 A extração explícita das arestas tem a vantagem de ser mais robusta, porém é restrita apenas a objetos poligonais. A amostragem de pontos, por sua vez, mostra-se bastante útil quando as arestas não são formadas por retas. Há também a vantagem de trabalhar melhor com arestas oclusas, como mostra a \figref{occlusion}.
 \end{comment}
-
-\begin{figure}[ht!]
-\centering
-\includegraphics{monografia/occlusion.png}
-\caption{Objeto com oclusão parcial das arestas. Imagem retirada de \cite{wuest}.}
-\label{occlusion}
-\end{figure}
 
 % Na primeira técnica a aresta parcialmente oclusa seria considerada duas arestas diferentes, enquanto que a amostragem de pontos seria capar de identificá-la como uma aresta só.
 
