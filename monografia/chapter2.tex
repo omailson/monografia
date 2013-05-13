@@ -190,11 +190,11 @@ Para este tipo de problema uma boa solução é o uso de múltiplas hipóteses d
 Para fins práticos as hipóteses mais prováveis são aquelas que mais se aproximam da amostra projetada. Utilizando estas informações e a equação \eqref{calculo_pose_amostragem} pode-se chegar à seguinte fórmula de cálculo de pose:
 
 \begin{equation}
-[R | t] = \argmin_{[R | t]} \sum_i \text{dist}^2(P \cdot e_{i,j}, \text{mindist}(e'_{i,j,l}, P \cdot e_{i,j}))
+[R | t] = \argmin_{[R | t]} \sum_i \text{dist}^2(P \cdot e_{i,j}, \argmin_{e'_{i,j,l}} (\text{dist} (e'_{i,j,l}, P \cdot e_{i,j})))
 \end{equation}
 
 \noindent
-em que $\text{mindist}(e'_{i,j,l}, P \cdot e_{i,j})$ resulta na hipótese com a menor distância da amostra projetada.
+em que $\displaystyle \argmin_{e'_{i,j,l}} (\text{dist} (e'_{i,j,l}, P \cdot e_{i,j}))$ resulta na hipótese com a menor distância da amostra projetada.
 
 \begin{comment}
 \section{NULL! Seção a ser reescrita}
