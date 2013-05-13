@@ -48,7 +48,7 @@ Estimadores robustos como um \emph{M-estimator} \cite{lepetit} também podem ser
 
 Para auxiliar no cálculo da pose é preciso extrair \emph{features}, que são componentes mais simples da cena como marcadores \cite{roberto2012mestrado}, arestas do objeto \cite{teichrieb2007survey}, textura do objeto \cite{mestradochico}, e pontos de interesse \cite{mestradochico}, que auxiliem na recuperação da pose (3D) da câmera virtual a partir de uma sequência de imagens 2D. Conhecendo a posição 3D dessas \emph{features} no quadro anterior e extraindo sua posição 2D no quadro atual já é um grande passo para realizar o rastreamento. A intenção dos algoritmos de rastreamento é descobrir uma pose da câmera que, ao usá-la para fazer a projeção 2D destas \emph{features} 3D, essas \emph{features} tenham as mesmas posições 2D das que foram extraídas do quadro atual.
 
-Como foi dito anteriormente, existem na literatura vários tipos de informações que podem ser usadas como \emph{features}. Uma das formas mais conhecidas de rastreamento é a que insere marcadores fiduciais na cena, como o da \figref{marcador_modelo}. Nesta técnica deve-se conhecer \emph{a priori} o marcador a ser utilizado. O trabalho consiste então em encontrar o marcador em cada quadro e saber que operação feita na câmera (rotação, translação ou cisalhamento) deixaria o marcador tomado como modelo (\figref{marcador_modelo}) com a mesma configuração que o marcador extraído da imagem (\figref{marcador_extraido}).
+Como foi dito anteriormente, existem na literatura vários tipos de informações que podem ser usadas como \emph{features}. Uma das formas mais conhecidas de rastreamento é a que insere marcadores fiduciais na cena, como o da \figref{marcador_modelo}. Nesta técnica deve-se conhecer \emph{a priori} o marcador a ser utilizado. O trabalho consiste então em encontrar o marcador em cada quadro e saber que operação feita na câmera (rotação, translação, cisalhamento ou deformações projetivas) deixaria o marcador tomado como modelo (\figref{marcador_modelo}) com a mesma configuração que o marcador extraído da imagem (\figref{marcador_extraido}).
 
 \begin{figure}[!ht]
 	\centerline{
@@ -88,7 +88,7 @@ As técnicas baseadas em modelo podem usar uma gama de informações do objeto p
 
 Além da textura do objeto, um outro tipo de informação que pode ser usada são as suas arestas \cite{lepetit}. O processo de casamento de aresta pode ser descrito da seguinte forma: tendo as arestas do modelo CAD pré-definido, o objetivo é encontrar os pontos de forte gradiente da imagem para formar linhas (que serão as arestas do objeto) e então encontrar a pose que projeta as arestas do modelo 3D o mais próximo possível das arestas extraídas da imagem.
 
-A escolha entra textura ou arestas do modelo depende do objeto a ser rastreado. A \figref{textura_aresta_textura} ilustra um objeto com textura cujas arestas não são bem definidas. Se for feita uma rotação do objeto no eixo $Z$, conforme mostrado na imagem, dificilmente um algoritmo baseado em arestas irá percebê-la corretamente. Por outro lado, o objeto mostrado na \figref{textura_aresta_aresta}, apesar de não ter textura, tem arestas bem definidas. No presente trabalho as técnicas de rastreamento baseado em arestas são investigadas.
+A escolha entre textura ou arestas do modelo depende do objeto a ser rastreado. A \figref{textura_aresta_textura} ilustra um objeto com textura cujas arestas não são bem definidas. Se for feita uma rotação do objeto no eixo $Z$, conforme mostrado na imagem, dificilmente um algoritmo baseado em arestas irá percebê-la corretamente. Por outro lado, o objeto mostrado na \figref{textura_aresta_aresta}, apesar de não ter textura, tem arestas bem definidas. No presente trabalho as técnicas de rastreamento baseado em arestas são investigadas.
 
 \begin{figure}[!ht]
 	\centerline{
@@ -97,7 +97,7 @@ A escolha entra textura ou arestas do modelo depende do objeto a ser rastreado. 
 			\label{textura_aresta_textura}
 		}
 		\hfil
-		\subfloat[Este objeto não possui textura, porém suas arestas são bem definidas. Imagem retirada de \cite{marchand_modelbased}.]{
+		\subfloat[Este objeto não possui textura muito complexa, porém suas arestas são bem definidas. Imagem retirada de \cite{marchand_modelbased}.]{
 			\includegraphics[width=0.25\textwidth]{monografia/textura_aresta_aresta}
 			\label{textura_aresta_aresta}
 		}
